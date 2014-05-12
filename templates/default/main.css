@@ -1,0 +1,74 @@
+/* Default Template CSS */
+
+body {
+  background-color:hsl(60, 100%, 98%);
+  font-family: 'Avenir Next','Avenir','Proxima Nova','Tahoma',sans-serif;
+  font-size: 1.0em;
+  line-height: 1.0em;
+}
+
+h1 {
+  text-align: center;
+  line-height: 30vh;
+  font-size: 3.6vw;
+}
+
+h2 {
+  padding-top:1.0em;
+  text-align: center;
+  font-size: 4vh;
+  marign-bottom: 0;
+}
+
+h3 {
+  font-size: 1.5 em;
+}
+
+a {
+  text-decoration: none;
+  color:hsl(205, 69%, 49%);
+}
+
+a:visited {
+  color:hsl(174, 58%, 36%);
+}
+
+a:hover {
+  color:hsl(205, 69%, 70%);
+}
+
+p {
+  line-height: 1.0em;
+}
+
+hr {
+  border-style: solid;
+  border-width: 1px;
+  color:hsl(49, 26%, 66%);
+}
+
+img {
+  width:100%;
+}
+
+#container {
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.date {
+  font-size: 0.9em;
+  line-height: 0.5em;
+  text-indent: 1.0em;
+}
+
+#sitehead {
+  min-height:30vh;
+}
+
+.category {
+  font-size: 0.9em;
+  line-height: 0.5em;
+  text-indent: 1.0em;
+}
