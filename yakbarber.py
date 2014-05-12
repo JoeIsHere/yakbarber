@@ -94,7 +94,6 @@ def paginatedIndex(posts):
   indexList = sorted(posts,key=lambda k: k[u'date'])[::-1]
   postList = []
   for i in indexList:
-    # i['post-content'] = i[u'post-content'].encode('ascii', 'xmlcharrefreplace')
     postList.append(i['post-content'])
   indexOfPosts = splitEvery(postsPerPage,indexList)
   with open(templateDir + u'/index.html','r','utf-8') as f:
