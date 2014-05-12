@@ -1,0 +1,23 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="{{webRoot}}main.css">
+</head>
+<body>
+<title>{{sitename}}</title>
+<div id="container">
+<div id="sitehead">
+<h1><a class="sitetitle" href="{{webRoot}}">{{sitename}}</a></h1>
+</div>
+{{#post-content}}
+<div class="post-content">{{{post-content}}}</div>
+<hr>
+{{/post-content}}
+{{#previous}}
+<div id="previous"><a href="{{previous}}">Older Posts</a></div>
+{{/previous}}
+{{#next}}
+<div id="next"><a href="{{next}}">Newer Posts</a></div>
+{{/next}}
+</div>
+</body>
+</html>
