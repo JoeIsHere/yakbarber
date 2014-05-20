@@ -1,12 +1,15 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="{{webRoot}}main.css">
+<link rel="stylesheet" href="{{webRoot}}solarized_dark.css">
+<script src="{{webRoot}}highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </head>
 <body>
 <title>{{sitename}}</title>
 <div id="container">
 <div id="sitehead">
-<h1><a class="sitetitle" href="{{webRoot}}">{{sitename}}</a></h1>
+<h1><a class="sitetitle" href="{{webRoot}}index.html">{{{sitename}}}</a></h1>
 </div>
 {{#post-content}}
 <div class="post-content">{{{post-content}}}</div>

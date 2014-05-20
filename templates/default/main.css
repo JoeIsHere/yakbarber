@@ -2,26 +2,27 @@
 
 body {
   background-color:hsl(60, 100%, 98%);
-  font-family: 'Avenir Next','Avenir','Proxima Nova','Tahoma',sans-serif;
-  font-size: 1.0em;
-  line-height: 1.0em;
+  font-family: 'Source Sans Pro','Avenir Next','Avenir','Proxima Nova','Tahoma',sans-serif;
+  font-size: 1.4em;
+  line-height: 1.8em;
 }
 
 h1 {
   text-align: center;
-  line-height: 30vh;
-  font-size: 3.6vw;
+  line-height: 16vh;
+  font-size: 7vw;
 }
 
 h2 {
   padding-top:1.0em;
   text-align: center;
-  font-size: 4vh;
-  marign-bottom: 0;
+  font-size: 2.0em;
 }
 
 h3 {
-  font-size: 1.5 em;
+  padding-top:0.8em;
+  font-size: 1.8 em;
+  text-align: center;
 }
 
 a {
@@ -38,7 +39,7 @@ a:hover {
 }
 
 p {
-  line-height: 1.0em;
+  line-height: 1.6em;
 }
 
 hr {
@@ -47,8 +48,27 @@ hr {
   color:hsl(49, 26%, 66%);
 }
 
+blockquote {
+  background-color:hsl(49, 26%, 90%);
+  padding:0.8em;
+  border-radius:0.3em;
+  margin:0 1.0em 0 1.0em;
+}
+
 img {
   width:100%;
+}
+
+code {
+  font-family:'BitStream Vera Sans','Inconsolata',monospace;
+}
+
+pre {
+ white-space: pre-wrap;       /* css-3 */
+ white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+ white-space: -pre-wrap;      /* Opera 4-6 */
+ white-space: -o-pre-wrap;    /* Opera 7 */
+ word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
 
 #container {

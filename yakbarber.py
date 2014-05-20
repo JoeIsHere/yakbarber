@@ -10,6 +10,7 @@ from itertools import islice
 import argparse
 import imp
 import shutil
+import re
 
 # Settings Import
 
@@ -17,7 +18,7 @@ parser = argparse.ArgumentParser(description='Yak Barber is a fiddly little time
 parser.add_argument('-s','--settings',nargs=1,help='Specify a settings.py file to use.')
 args = parser.parse_args()
 if args.settings is not None:
-  settingsPath = args.settings
+  settingsPath = args.settings[0]
 else:
   settingsPath = './settings.py'
 settings = imp.load_source('settings.py',settingsPath)
@@ -48,8 +49,10 @@ def splitEvery(n, iterable):
         piece = list(islice(i, n))
 
 def removePunctuation(text):
-  text = text.encode('ascii', 'xmlcharrefreplace')
-  return text.replace('**','').replace('*','').replace('\'','').replace('\"','').replace('.','').replace(',','').replace('#','').replace('|','').replace('!','').replace('&','')
+  text = re.sub(r'\s[^a-zA-Z0-9]\s',' ',text)
+  text = re.sub(r'[^a-zA-Z0-9\s]+','',text)
+  text = text.encode('ascii','xmlcharrefreplace')
+  return text
 
 def templateResources():
   tList = os.listdir(templateDir)
@@ -78,12 +81,12 @@ def renderPost(post, posts):
   postName = metadata[u'date'].split(' ')[0] + '-' + postName.replace(u' ',u'-')
   postName = u'-'.join(postName.split('-'))
   postFileName = outputDir + postName + '.html'
-  metadata[u'postURL'] = webRoot + postName
+  metadata[u'postURL'] = webRoot + postName + '.html'
   with open(templateDir + u'/post-content.html','r','utf-8') as f:
     postContentTemplate = f.read()
     postContent = pystache.render(postContentTemplate,metadata)
     metadata['post-content'] = postContent.encode('ascii', 'xmlcharrefreplace')
-  with open(templateDir + u'/post-content.html','r','utf-8') as f:
+  with open(templateDir + u'/post-page.html','r','utf-8') as f:
     postPageTemplate = f.read()
     postPageResult = pystache.render(postPageTemplate,metadata)
   with open(postFileName,'w','utf-8') as f:
@@ -126,7 +129,7 @@ def start():
   posts =[]
   contentList = os.listdir(contentDir)
   for c in contentList:
-    if c.endswith('.md'):
+    if c.endswith('.md') or c.endswith('.markdown'):
       mdc = openConvert(contentDir+c)
       convertedList.append(mdc)
   sortedList = sorted(convertedList, key=lambda x: x[0], reverse=True)
