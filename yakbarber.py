@@ -4,14 +4,16 @@
 from codecs import open
 import os
 import sys
-import pprint
 import pystache
 from itertools import islice
 import argparse
 import imp
 import shutil
 import re
+import datetime
 import time
+import pytz
+import BeautifulSoup
 
 # Settings Import
 
@@ -99,19 +101,40 @@ def renderPost(post, posts):
     f.write(postPageResult)
   return posts.append(metadata)
 
+def extractTags(html,tag):
+  soup = BeautifulSoup.BeautifulSoup(html)
+  to_extract = soup.findAll(tag)
+  for item in to_extract:
+    item.extract()
+  return unicode(soup)
+
+def RFC3339Convert(timeString):
+  strip = time.strptime(timeString, '%Y-%m-%d %H:%M:%S')
+  dt = datetime.datetime.fromtimestamp(time.mktime(strip))
+  pacific = pytz.timezone('US/Pacific')
+  ndt = dt.replace(tzinfo=pacific)
+  utc = pytz.utc
+  return ndt.astimezone(utc).isoformat().split('+')[0] + 'Z'
+
+
 def feed(posts):
   feedDict = posts[0]
-  feedDict.setdefault('atom-entry',[])
-  feedDict['gen-time'] = time.asctime(time.localtime())
+  entryList = str()
+  feedDict['gen-time'] = datetime.datetime.utcnow().isoformat('T') + 'Z'
   with open(templateDir + u'/atom.xml','r','utf-8') as f:
     atomTemplate = f.read()
   with open(templateDir + u'/atom-entry.xml','r','utf-8') as f:
     atomEntryTemplate = f.read()
   for e,p in enumerate(posts):
-    if e < postsPerPage:
+    p[u'date'] = RFC3339Convert(p[u'date'])
+    p[u'content'] = extractTags(p[u'content'],'script')
+    p[u'content'] = extractTags(p[u'content'],'object')
+    p[u'content'] = extractTags(p[u'content'],'iframe')
+    if e < 100:
       atomEntryResult = pystache.render(atomEntryTemplate,p)
-      feedDict['atom-entry'].append(atomEntryResult)
-  feedResult = pystache.render(atomTemplate,feedDict)
+      entryList += atomEntryResult
+  feedDict['atom-entry'] = entryList
+  feedResult = pystache.render(atomTemplate,feedDict,string_encode='utf-8')
   with open(outputDir + 'feed','w','utf-8') as f:
     f.write(feedResult)
 

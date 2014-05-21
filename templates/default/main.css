@@ -10,9 +10,9 @@ body {
 
 h1 {
   text-align: center;
-  line-height: 16vh;
+  line-height: 1.0em;
   font-size: 7vw;
-  word-spacing: 16vh;
+  word-spacing: 7vw;
 }
 
 h2 {
@@ -88,8 +88,10 @@ pre {
 }
 
 #sitehead {
-  min-height:30vh;
-  height:140px;
+  min-height:140px;
+  margin-top:2.0em;
+  padding-top:2.0em;
+  height:10.0em;
   min-width:800px;
 }
 
