@@ -14,11 +14,14 @@ import datetime
 import time
 import pytz
 import BeautifulSoup
+import smartypants
+import cProfile
 
 # Settings Import
 
 parser = argparse.ArgumentParser(description='Yak Barber is a fiddly little time sink, and blog system.')
 parser.add_argument('-s','--settings',nargs=1,help='Specify a settings.py file to use.')
+parser.add_argument('-c','--cprofile',action='store_true', default=False,help='Run cProfile to check run time and elements.')
 args = parser.parse_args()
 if args.settings is not None:
   settingsPath = args.settings[0]
@@ -37,6 +40,7 @@ sitename = settings.sitename
 author = settings.author
 md = settings.md
 postsPerPage = settings.postsPerPage
+typekitId = settings.typekitId
 
 # 'meta','fenced_code','footnotes','smart_strong','smarty'
 
@@ -71,6 +75,7 @@ def openConvert(mdfile):
     rawfile = f.read()
     converted = md.convert(rawfile)
     if re.match(r'[a-zA-Z0-9]+',md.Meta[u'title'][0]):
+      converted = smartypants.smartypants(converted)
       convertedMeta = [md.Meta, converted]
       return convertedMeta
     else:
@@ -85,11 +90,13 @@ def renderPost(post, posts):
   metadata[u'sitename'] = sitename
   metadata[u'webRoot'] = webRoot
   metadata[u'author'] = author
+  metadata[u'typekitId'] = typekitId
   postName = removePunctuation(metadata[u'title'])
   postName = metadata[u'date'].split(' ')[0] + '-' + postName.replace(u' ',u'-')
   postName = u'-'.join(postName.split('-'))
   postFileName = outputDir + postName + '.html'
   metadata[u'postURL'] = webRoot + postName + '.html'
+  metadata[u'title'] = unicode(smartypants.smartypants(metadata[u'title']))
   with open(templateDir + u'/post-content.html','r','utf-8') as f:
     postContentTemplate = f.read()
     postContent = pystache.render(postContentTemplate,metadata,decode_errors='ignore')
@@ -149,6 +156,7 @@ def paginatedIndex(posts):
     indexTemplate = f.read()
   indexDict = {}
   indexDict[u'sitename'] = sitename
+  indexDict[u'typekitId'] = typekitId
   for e,p in enumerate(indexOfPosts):
     indexDict['post-content'] = p
     print e
@@ -195,4 +203,7 @@ def main():
   start()
 
 if __name__ == "__main__":
-  main()
+  if args.cprofile:
+    cProfile.run('main()')
+  else:
+    main()

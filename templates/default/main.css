@@ -64,15 +64,17 @@ img {
 }
 
 code {
-  font-family:'BitStream Vera Sans','Inconsolata',monospace;
+  font-family: 'Ubuntu Mono','BitStream Vera Sans','Inconsolata',monospace;
+  border-radius:0.3em;
 }
 
 pre {
- white-space: pre-wrap;       /* css-3 */
- white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
- white-space: -pre-wrap;      /* Opera 4-6 */
- white-space: -o-pre-wrap;    /* Opera 7 */
- word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  font-family:'Courier Prime','Typewriter','Courier',monospace;
+  white-space: pre-wrap;       /* css-3 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
 
 #container {
@@ -93,6 +95,16 @@ pre {
   padding-top:2.0em;
   height:10.0em;
   min-width:800px;
+}
+
+#topnav {
+  background-color:rgb(234, 253, 255);
+  position:absolute;
+  padding:0.3em;
+  margin:0;
+  top:0px;
+  left: 0px;
+  border-bottom-right-radius:0.6em;
 }
 
 .category {
