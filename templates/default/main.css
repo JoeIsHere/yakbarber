@@ -5,23 +5,27 @@ body {
   font-family: 'Source Sans Pro','Avenir Next','Avenir','Proxima Nova','Tahoma',sans-serif;
   font-size: 1.4em;
   line-height: 1.8em;
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
 
 h1 {
   text-align: center;
   line-height: 16vh;
   font-size: 7vw;
+  word-spacing: 16vh;
 }
 
 h2 {
   padding-top:1.0em;
   text-align: center;
   font-size: 2.0em;
+  line-height: 1.4em
 }
 
 h3 {
   padding-top:0.8em;
-  font-size: 1.8 em;
+  font-size: 1.8em;
+  line-height:1.4em;
   text-align: center;
 }
 
@@ -85,6 +89,8 @@ pre {
 
 #sitehead {
   min-height:30vh;
+  height:140px;
+  min-width:800px;
 }
 
 .category {

@@ -66,9 +66,12 @@ def openConvert(mdfile):
   with open(mdfile, 'r', 'utf-8') as f:
     rawfile = f.read()
     converted = md.convert(rawfile)
-    convertedMeta = [md.Meta, converted]
-  #pprint.pprint(convertedMeta, indent=1, depth=4)
-  return convertedMeta
+    if re.match(r'[a-zA-Z0-9]+',md.Meta[u'title'][0]):
+      convertedMeta = [md.Meta, converted]
+      return convertedMeta
+    else:
+      return None
+
 
 def renderPost(post, posts):
   metadata = {}
@@ -84,11 +87,11 @@ def renderPost(post, posts):
   metadata[u'postURL'] = webRoot + postName + '.html'
   with open(templateDir + u'/post-content.html','r','utf-8') as f:
     postContentTemplate = f.read()
-    postContent = pystache.render(postContentTemplate,metadata)
-    metadata['post-content'] = postContent.encode('ascii', 'xmlcharrefreplace')
+    postContent = pystache.render(postContentTemplate,metadata,decode_errors='ignore')
+    metadata['post-content'] = postContent
   with open(templateDir + u'/post-page.html','r','utf-8') as f:
     postPageTemplate = f.read()
-    postPageResult = pystache.render(postPageTemplate,metadata)
+    postPageResult = pystache.render(postPageTemplate,metadata,decode_errors='ignore')
   with open(postFileName,'w','utf-8') as f:
     f.write(postPageResult)
   return posts.append(metadata)
@@ -105,21 +108,22 @@ def paginatedIndex(posts):
   indexDict[u'sitename'] = sitename
   for e,p in enumerate(indexOfPosts):
     indexDict['post-content'] = p
+    print e
+    for x in p:
+      print x['title']
     if e == 0:
       fileName = u'index.html'
-      try:
-        if e[1]:
-          indexDict[u'next'] = webRoot + u'index1.html'
-      except:
-        indexDict[u'next'] = ''
+      if len(indexList) > postsPerPage:
+        indexDict[u'previous'] = webRoot + u'index2.html'
     else:
       fileName = u'index' + str(e+1) + u'.html'
       if e == 1:
-        indexDict[u'previous'] = webRoot + u'index.html'
+        indexDict[u'next'] = webRoot + u'index.html'
+        indexDict[u'previous']  = webRoot + u'index' + str(e+2) + u'.html'
       else:
-        indexDict[u'previous'] = webRoot + u'index' + str(e) + u'.html'
-      if e < len(indexList):
-        indexDict[u'next'] = webRoot + u'index' + str(e-1) + u'.html'
+        indexDict[u'previous'] = webRoot + u'index' + str(e+2) + u'.html'
+        if e < len(indexList):
+          indexDict[u'next'] = webRoot + u'index' + str(e-1) + u'.html'
     indexPageResult = pystache.render(indexTemplate,indexDict)
     with open(outputDir + fileName,'w','utf-8') as f:
       f.write(indexPageResult)
@@ -131,7 +135,8 @@ def start():
   for c in contentList:
     if c.endswith('.md') or c.endswith('.markdown'):
       mdc = openConvert(contentDir+c)
-      convertedList.append(mdc)
+      if mdc is not None:
+        convertedList.append(mdc)
   sortedList = sorted(convertedList, key=lambda x: x[0], reverse=True)
   #pprint.pprint(convertedList, indent=1, depth=4)
   for post in sortedList:
