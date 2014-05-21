@@ -58,7 +58,7 @@ def removePunctuation(text):
 
 def templateResources():
   tList = os.listdir(templateDir)
-  tList = [x for x in tList if ('.html' and '.xml') not in x]
+  tList = [x for x in tList if ('.html' or '.xml') not in x]
   for tr in tList:
       fullPath = os.path.join(templateDir, tr)
       if (os.path.isfile(fullPath)):
@@ -107,9 +107,10 @@ def feed(posts):
     atomTemplate = f.read()
   with open(templateDir + u'/atom-entry.xml','r','utf-8') as f:
     atomEntryTemplate = f.read()
-  for p in posts:
-    atomEntryResult = pystache.render(atomEntryTemplate,p)
-    feedDict['atom-entry'].append(atomEntryResult)
+  for e,p in enumerate(posts):
+    if e < postsPerPage:
+      atomEntryResult = pystache.render(atomEntryTemplate,p)
+      feedDict['atom-entry'].append(atomEntryResult)
   feedResult = pystache.render(atomTemplate,feedDict)
   with open(outputDir + 'feed','w','utf-8') as f:
     f.write(feedResult)
