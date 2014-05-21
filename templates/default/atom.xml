@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+<title>{{sitename}}</title>
+<subtitle>By {{author}}</subtitle>
+<link rel="alternate" type="text/html" href="{{webRoot}}" />
+<link rel="self" type="application/atom+xml" href="{{webRoot}}feed" />
+<id>{{webRoot}}feed</id>
+<updated>{{gen-time}}</updated><rights>Copyright 2014, {{author}}</rights>
+{{#atom-entry}}
+{{{atom-entry}}}
+{{/atom-entry}}
+</feed><!-- THE END -->

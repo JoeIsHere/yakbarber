@@ -1,0 +1,17 @@
+<entry>
+  <title>{{title}}</title>
+  <link rel="self" type="text/html" href="{{postURL}}" />
+  <published>{{date}}</published>
+  {{#updated}}
+  <updated>{{updated}}</updated>
+  {{/updated}}
+  <author>
+    <name>{{author}}</name>
+    <uri>{{webRoot}}</uri>
+  </author>
+  <content type="html" xml:lang="en">
+    <![CDATA[
+    {{{content}}}
+    ]]>
+  </content>
+</entry>

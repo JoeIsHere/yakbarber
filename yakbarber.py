@@ -11,6 +11,7 @@ import argparse
 import imp
 import shutil
 import re
+import time
 
 # Settings Import
 
@@ -31,6 +32,7 @@ contentDir = settings.contentDir
 templateDir = settings.templateDir
 outputDir = settings.outputDir
 sitename = settings.sitename
+author = settings.author
 md = settings.md
 postsPerPage = settings.postsPerPage
 
@@ -56,7 +58,7 @@ def removePunctuation(text):
 
 def templateResources():
   tList = os.listdir(templateDir)
-  tList = [x for x in tList if '.html' not in x]
+  tList = [x for x in tList if ('.html' and '.xml') not in x]
   for tr in tList:
       fullPath = os.path.join(templateDir, tr)
       if (os.path.isfile(fullPath)):
@@ -80,6 +82,7 @@ def renderPost(post, posts):
   metadata[u'content'] = post[1]
   metadata[u'sitename'] = sitename
   metadata[u'webRoot'] = webRoot
+  metadata[u'author'] = author
   postName = removePunctuation(metadata[u'title'])
   postName = metadata[u'date'].split(' ')[0] + '-' + postName.replace(u' ',u'-')
   postName = u'-'.join(postName.split('-'))
@@ -96,8 +99,24 @@ def renderPost(post, posts):
     f.write(postPageResult)
   return posts.append(metadata)
 
+def feed(posts):
+  feedDict = posts[0]
+  feedDict.setdefault('atom-entry',[])
+  feedDict['gen-time'] = time.asctime(time.localtime())
+  with open(templateDir + u'/atom.xml','r','utf-8') as f:
+    atomTemplate = f.read()
+  with open(templateDir + u'/atom-entry.xml','r','utf-8') as f:
+    atomEntryTemplate = f.read()
+  for p in posts:
+    atomEntryResult = pystache.render(atomEntryTemplate,p)
+    feedDict['atom-entry'].append(atomEntryResult)
+  feedResult = pystache.render(atomTemplate,feedDict)
+  with open(outputDir + 'feed','w','utf-8') as f:
+    f.write(feedResult)
+
 def paginatedIndex(posts):
   indexList = sorted(posts,key=lambda k: k[u'date'])[::-1]
+  feed(indexList)
   postList = []
   for i in indexList:
     postList.append(i['post-content'])
