@@ -74,11 +74,14 @@ def openConvert(mdfile):
   with open(mdfile, 'r', 'utf-8') as f:
     rawfile = f.read()
     converted = md.convert(rawfile)
-    if re.match(r'[a-zA-Z0-9]+',md.Meta[u'title'][0]):
-      converted = smartypants.smartypants(converted)
-      convertedMeta = [md.Meta, converted]
-      return convertedMeta
-    else:
+    try:
+      if re.match(r'[a-zA-Z0-9]+',md.Meta[u'title'][0]):
+        converted = smartypants.smartypants(converted)
+        convertedMeta = [md.Meta, converted]
+        return convertedMeta
+      else:
+        return None
+    except:
       return None
 
 
