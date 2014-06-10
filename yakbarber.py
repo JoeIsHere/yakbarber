@@ -14,7 +14,8 @@ import datetime
 import time
 import pytz
 import BeautifulSoup
-import smartypants
+import markdown
+import mdx_smartypants
 import cProfile
 
 # Settings Import
@@ -38,11 +39,12 @@ templateDir = settings.templateDir
 outputDir = settings.outputDir
 sitename = settings.sitename
 author = settings.author
-md = settings.md
 postsPerPage = settings.postsPerPage
 typekitId = settings.typekitId
 
 # 'meta','fenced_code','footnotes','smart_strong','smarty'
+
+md = markdown.Markdown(extensions=['meta','smartypants'])
 
 def safeMkDir(f):
     d = f
@@ -76,7 +78,7 @@ def openConvert(mdfile):
     converted = md.convert(rawfile)
     try:
       if re.match(r'[a-zA-Z0-9]+',md.Meta[u'title'][0]):
-        converted = smartypants.smartypants(converted)
+        converted = converted
         convertedMeta = [md.Meta, converted]
         return convertedMeta
       else:
@@ -84,6 +86,15 @@ def openConvert(mdfile):
     except:
       return None
 
+def aboutPage():
+  with open(contentDir + u'about.markdown', 'r', 'utf-8') as f:
+    rawfile = f.read()
+    converted = {'about': md.convert(rawfile),'sitename':sitename,'webRoot':webRoot}
+  with open(templateDir + u'about.html','r','utf-8') as f:
+    aboutTemplate = f.read()
+  with open(outputDir + u'about.html', 'w', 'utf-8') as f:
+    aboutResult = pystache.render(aboutTemplate,converted)
+    return f.write(aboutResult)
 
 def renderPost(post, posts):
   metadata = {}
@@ -95,12 +106,16 @@ def renderPost(post, posts):
   metadata[u'author'] = author
   metadata[u'typekitId'] = typekitId
   postName = removePunctuation(metadata[u'title'])
-  postName = metadata[u'date'].split(' ')[0] + '-' + postName.replace(u' ',u'-')
+  postName = metadata[u'date'].split(' ')[0] + '-' + postName.replace(u' ',u'-').replace(u'‑',u'-')
   postName = u'-'.join(postName.split('-'))
   postFileName = outputDir + postName + '.html'
   metadata[u'postURL'] = webRoot + postName + '.html'
-  metadata[u'title'] = unicode(smartypants.smartypants(metadata[u'title']))
-  with open(templateDir + u'/post-content.html','r','utf-8') as f:
+  metadata[u'title'] = unicode(mdx_smartypants.unicode_entities(metadata[u'title']))
+  if u'link' in metadata:
+    templateType = u'/post-content-link.html'
+  else:
+    templateType = u'/post-content.html'
+  with open(templateDir + templateType,'r','utf-8') as f:
     postContentTemplate = f.read()
     postContent = pystache.render(postContentTemplate,metadata,decode_errors='ignore')
     metadata['post-content'] = postContent
@@ -193,6 +208,7 @@ def start():
         convertedList.append(mdc)
   sortedList = sorted(convertedList, key=lambda x: x[0], reverse=True)
   #pprint.pprint(convertedList, indent=1, depth=4)
+  aboutPage()
   for post in sortedList:
     renderPost(post,posts)
   paginatedIndex(posts)

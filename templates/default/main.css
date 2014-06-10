@@ -11,8 +11,8 @@ body {
 h1 {
   text-align: center;
   line-height: 1.0em;
-  font-size: 7vw;
-  word-spacing: 7vw;
+  font-size: 4.0em;
+  word-spacing: 4.0em;
 }
 
 h2 {
@@ -35,7 +35,7 @@ a {
 }
 
 a:visited {
-  color:hsl(174, 58%, 36%);
+  color:hsl(205, 69%, 49%);
 }
 
 a:hover {
@@ -100,15 +100,57 @@ pre {
 #topnav {
   background-color:rgb(234, 253, 255);
   position:absolute;
-  padding:0.3em;
+  padding:0.3em 0.5em 0.3em 0.5em;
   margin:0;
   top:0px;
   left: 0px;
   border-bottom-right-radius:0.6em;
+  text-align:center;
 }
 
 .category {
   font-size: 0.9em;
   line-height: 0.5em;
   text-indent: 1.0em;
+}
+
+@media screen and (min-width:640px) {}
+
+@media all and (max-device-width: 480px) {
+    h1 {
+          text-align: center;
+          line-height: 1.0em;
+          font-size: 2.0em;
+          word-spacing: 1.0em;
+    }
+    body {
+        font-size:3.0em;
+        margin:2.0em;
+    }
+    ol,ul {
+      margin-left:0.2em;
+    }
+    #sitehead,#container {
+      min-width:100%;
+      width:100%;
+    }
+}
+
+
+@media screen and (min-width:200px) and (max-width:639px) {
+  #container,#sitehead {
+    width:100%; 
+    min-width:100px;
+    min-height:100px;
+    margin-top:0.5em;
+    padding-top:0.5em;
+    height:2.0em;
+  }
+  body {
+    font-size:3.0em;
+    margin:2.0em;
+  }
+  p {font-size:3.0em;}
+  h1 {font-size:2.0em;}
+
 }

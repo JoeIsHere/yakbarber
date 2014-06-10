@@ -1,7 +1,13 @@
 <entry>
   <id>{{postURL}}</id>
   <title>{{{title}}}</title>
-  <link type="application/atom+xml" href="{{postURL}}" />
+  {{#link}}
+  <link rel="alternate" type="text/html" href="{{link}}" />
+  <link rel="related" type="text/html" href="{{postURL}}" />
+  {{/link}}
+  {{^link}}
+  <link rel="alternate" type="text/html" href="{{postURL}}" />
+  {{/link}}
   <published>{{date}}</published>
   {{#updated}}
   <updated>{{updated}}</updated>
