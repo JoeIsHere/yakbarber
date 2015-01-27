@@ -44,7 +44,7 @@ typekitId = settings.typekitId
 
 # 'meta','fenced_code','footnotes','smart_strong','smarty'
 
-md = markdown.Markdown(extensions=['meta','footnotes','smartypants','toc(anchorlink=True)'])
+md = markdown.Markdown(extensions=['meta','smartypants','toc(anchorlink=True)'])
 
 def safeMkDir(f):
     d = f
