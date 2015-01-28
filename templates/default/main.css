@@ -6,6 +6,7 @@ body {
   font-size: 1.4em;
   line-height: 1.8em;
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  background:url("http://joe-steel.com/images/grand_canyon/_DSC0622.jpg") no-repeat center center fixed;
 }
 
 h1 {
@@ -13,6 +14,7 @@ h1 {
   line-height: 1.0em;
   font-size: 4.0em;
   word-spacing: 4.0em;
+  font-weight:100;
 }
 
 h2 {
@@ -29,6 +31,8 @@ h3 {
   text-align: center;
 }
 
+h4 {padding-left:1.0em;}
+
 a {
   text-decoration: none;
   color:hsl(205, 69%, 49%);
@@ -44,12 +48,15 @@ a:hover {
 
 p {
   line-height: 1.6em;
+  padding-left: 1.0em;
+  padding-right: 1.0em;
 }
 
 hr {
   border-style: solid;
-  border-width: 1px;
+  border-width: 0px;
   color:hsl(49, 26%, 66%);
+  display:none;
 }
 
 blockquote {
@@ -57,10 +64,6 @@ blockquote {
   padding:0.8em;
   border-radius:0.3em;
   margin:0 1.0em 0 1.0em;
-}
-
-img {
-  width:100%;
 }
 
 code {
@@ -77,41 +80,121 @@ pre {
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
 
+img {
+  max-width:800px;
+  margin-left:-1.0em;
+}
+
+figure {
+  max-width:800px;
+  margin-top: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 1.0em;
+  padding:0;
+}
+
+figcaption {
+  font-size:0.8em;
+  font-style:italic;
+  font-weight:100;
+  text-indent:1.0em;
+}
+
 #container {
   width: 800px;
   margin-left: auto;
   margin-right: auto;
+  background-color:hsl(60, 100%, 98%);
+  background: linear-gradient(to right,hsl(60, 100%, 98%),hsl(60, 100%, 98%)) , url("http://joe-steel.com/images/grand_canyon/_DSC0622.jpg") no-repeat center center fixed;
+  background-blend-mode: difference;
 }
 
 .date {
-  font-size: 0.9em;
+  font-size: 0.8em;
   line-height: 0.5em;
   text-indent: 1.0em;
+  font-weight: 100;
+}
+
+#multwrap {
 }
 
 #sitehead {
   min-height:140px;
-  margin-top:2.0em;
   padding-top:2.0em;
-  height:10.0em;
+  padding-bottom:1.0em;
   min-width:800px;
+  background:url("http://joe-steel.com/images/grand_canyon/_DSC0622.jpg") no-repeat center center fixed;
 }
 
-#topnav {
-  background-color:rgb(234, 253, 255);
+.topnav {
+  /*background-color:rgb(234, 253, 255);*/
   position:absolute;
-  padding:0.3em 0.5em 0.3em 0.5em;
-  margin:0;
-  top:0px;
-  left: 0px;
-  border-bottom-right-radius:0.6em;
+  /*padding:0.3em 0.5em 0.3em 0.5em;*/
+  margin-left:auto;
+  margin-right:auto;
+  top: 0;
+  left: 0;
+  right: 0;
   text-align:center;
+  max-width:800px;
+  color:hsl(60, 100%, 98%);
+  mix-blend-mode:difference;
+  word-spacing:2.0em;
+}
+
+.botnav {
+  text-align:center;
+  color:hsl(60, 100%, 98%);
+  mix-blend-mode:difference;
+  word-spacing:2.0em;
+  padding-top:1.0em;
+}
+
+a.botnav {
+  color:hsl(60, 100%, 98%);
+  position:relative;
+}
+
+a.topnav {
+  color:hsl(60, 100%, 98%);
+  position:relative;
+}
+
+#next {
+  color:hsl(60, 100%, 98%);
+  position:relative;
+  mix-blend-mode:difference;
+  float:left;
+  padding-left:0.5em;
+}
+
+#previous {
+  color:hsl(60, 100%, 98%);
+  position:relative;
+  mix-blend-mode:difference;
+  float:right;
+  padding-right:0.5em;
+}
+
+.post-content {
+  background-color:hsl(60, 100%, 98%);
+  padding-bottom:1.0em;
 }
 
 .category {
-  font-size: 0.9em;
+  font-size: 0.8em;
   line-height: 0.5em;
   text-indent: 1.0em;
+  font-weight: 100;
+  display:none;
+}
+
+a.sitetitle {
+  font-weight:100;
+  mix-blend-mode:difference;
+  color:hsl(60, 100%, 98%);
 }
 
 @media screen and (min-width:640px) {}
@@ -122,18 +205,18 @@ pre {
           line-height: 1.0em;
           font-size: 2.0em;
           word-spacing: 1.0em;
-    }
+    } 
     body {
         font-size:3.0em;
-        margin:2.0em;
+margin: 0;
+background-size:cover;
     }
     ol,ul {
       margin-left:0.2em;
     }
-    #sitehead,#container {
-      min-width:100%;
-      width:100%;
-    }
+#container {width:40.3ch;}
+img {max-width:40.3ch}
+
 }
 
 
@@ -148,7 +231,6 @@ pre {
   }
   body {
     font-size:3.0em;
-    margin:2.0em;
   }
   p {font-size:3.0em;}
   h1 {font-size:2.0em;}

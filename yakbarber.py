@@ -90,6 +90,7 @@ def aboutPage():
   with open(contentDir + u'about.markdown', 'r', 'utf-8') as f:
     rawfile = f.read()
     converted = {'about': md.convert(rawfile),'sitename':sitename,'webRoot':webRoot}
+  converted[u'typekitId'] = typekitId
   with open(templateDir + u'about.html','r','utf-8') as f:
     aboutTemplate = f.read()
   with open(outputDir + u'about.html', 'w', 'utf-8') as f:
