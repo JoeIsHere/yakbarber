@@ -179,8 +179,8 @@ def paginatedIndex(posts):
   for e,p in enumerate(indexOfPosts):
     indexDict['post-content'] = p
     print e
-    for x in p:
-      print x['title']
+    #for x in p:
+      #print x['title']
     if e == 0:
       fileName = u'index.html'
       if len(indexList) > postsPerPage:
