@@ -6,7 +6,16 @@ body {
   font-size: 1.4em;
   line-height: 1.8em;
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
-  background:url("http://joe-steel.com/images/grand_canyon/_DSC0622.jpg") no-repeat center center fixed;
+  /*background:url("http://joe-steel.com/images/grand_canyon/_DSC0622.jpg") no-repeat center center fixed;*/
+  /*background-image:
+    linear-gradient(
+      to bottom, 
+      #5C6B7E, 
+      #979296, 
+      #B1AAA7, 
+      #EAC5AA,
+      #FFC881
+    );*/
 }
 
 h1 {
@@ -82,15 +91,19 @@ pre {
 
 img {
   max-width:800px;
-  margin-left:-1.0em;
+  width:100%;
+  padding:0;
+  margin:0 auto;
 }
 
 figure {
   max-width:800px;
-  margin-top: 0;
+  /*margin-top: 0;
   margin-right: 0;
   margin-bottom: 0;
-  margin-left: 1.0em;
+  margin-left: 1.0em;*/
+  margin: 0 auto;
+  width:100%;
   padding:0;
 }
 
@@ -99,6 +112,9 @@ figcaption {
   font-style:italic;
   font-weight:100;
   text-indent:1.0em;
+  margin-left: auto;
+  margin-right: auto;
+  padding:0;
 }
 
 #container {
@@ -106,8 +122,6 @@ figcaption {
   margin-left: auto;
   margin-right: auto;
   background-color:hsl(60, 100%, 98%);
-  background: linear-gradient(to right,hsl(60, 100%, 98%),hsl(60, 100%, 98%)) , url("http://joe-steel.com/images/grand_canyon/_DSC0622.jpg") no-repeat center center fixed;
-  background-blend-mode: difference;
 }
 
 .date {
@@ -125,11 +139,10 @@ figcaption {
   padding-top:2.0em;
   padding-bottom:1.0em;
   min-width:800px;
-  background:url("http://joe-steel.com/images/grand_canyon/_DSC0622.jpg") no-repeat center center fixed;
+  /*background:url("http://joe-steel.com/images/grand_canyon/_DSC0622.jpg") no-repeat center center fixed;*/
 }
 
 .topnav {
-  /*background-color:rgb(234, 253, 255);*/
   position:absolute;
   /*padding:0.3em 0.5em 0.3em 0.5em;*/
   margin-left:auto;
@@ -139,43 +152,46 @@ figcaption {
   right: 0;
   text-align:center;
   max-width:800px;
-  color:hsl(60, 100%, 98%);
-  mix-blend-mode:difference;
+  
+  
   word-spacing:2.0em;
 }
 
 .botnav {
   text-align:center;
-  color:hsl(60, 100%, 98%);
-  mix-blend-mode:difference;
+  
+  
   word-spacing:2.0em;
   padding-top:1.0em;
 }
 
 a.botnav {
-  color:hsl(60, 100%, 98%);
+  
   position:relative;
 }
 
 a.topnav {
-  color:hsl(60, 100%, 98%);
+  
   position:relative;
 }
 
 #next {
-  color:hsl(60, 100%, 98%);
+  
   position:relative;
-  mix-blend-mode:difference;
+  
   float:left;
   padding-left:0.5em;
 }
 
 #previous {
-  color:hsl(60, 100%, 98%);
+  
   position:relative;
-  mix-blend-mode:difference;
+  
   float:right;
   padding-right:0.5em;
+}
+
+.permalink{
 }
 
 .post-content {
@@ -193,9 +209,11 @@ a.topnav {
 
 a.sitetitle {
   font-weight:100;
-  mix-blend-mode:difference;
-  color:hsl(60, 100%, 98%);
+  color:black;
 }
+
+.twitter-tweet { margin: 0px auto !important;
+width: 100% !important; }
 
 @media screen and (min-width:640px) {}
 
@@ -226,7 +244,8 @@ img {max-width:40.3ch}
     min-width:100px;
     min-height:100px;
     margin-top:0.5em;
-    padding-top:0.5em;
+    /*padding-top:0.5em;*/
+    padding: 0;
     height:2.0em;
   }
   body {
@@ -235,4 +254,25 @@ img {max-width:40.3ch}
   p {font-size:3.0em;}
   h1 {font-size:2.0em;}
 
+}
+
+.videowrapper {
+    float: none;
+    clear: both;
+    width: 100%;
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 25px;
+    padding-left:0;
+    padding-right:0;
+    margin:0;
+    height: 0;
+}
+.videowrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding:0
 }
