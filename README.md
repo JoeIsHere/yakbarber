@@ -9,10 +9,6 @@ This is currently in a very early stage. It can very quickly process markdown fi
 
 ## TO-DO:
 
-1. <strike>Mustache RSS template.</strike> Fix Mustache Atom implementation.
-2. Implement SimpleHTTPServer for local testing.
-3. Find a way to import the settings that doesn't display the package import warning.
-4. Add xmlrpc to allow publishing from applications that support xmlrpc.
-5. Refactor the page write step to happen when the dictionary is fully assembled.
-6. Refactor the dictionary to be a Python Class object.
-7. <strike>Clean-up the generated page names. Current replace is a hack, should be RegEx.</strike>
+1. Implement local testing.
+2. Refactor the current dictionary to be a class object that processes pages on a conditional basis.
+3. Clean-up the generated page names for hyphens.
