@@ -8,15 +8,14 @@ import pystache
 from itertools import islice
 import argparse
 import imp
-#import importlib.util
 import shutil
 import re
 import datetime
 import time
 import pytz
-from bs4 import BeautifulSoup
+import BeautifulSoup
 import markdown
-#import mdx_smartypants
+import mdx_smartypants
 import cProfile
 from xml.sax.saxutils import escape
 
@@ -31,7 +30,6 @@ if args.settings is not None:
 else:
   settingsPath = './settings.py'
 settings = imp.load_source('settings.py',settingsPath)
-#settings = importlib.util.spec_from_file_location(settingsPath,'settings.py')
 
 # Settings Local
 
@@ -80,7 +78,7 @@ def openConvert(mdfile):
     rawfile = f.read()
     converted = md.convert(rawfile)
     try:
-      if re.match(r'[a-zA-Z0-9]+',md.Meta['title'][0]):
+      if re.match(r'[a-zA-Z0-9]+',md.Meta[u'title'][0]):
         converted = converted
         convertedMeta = [md.Meta, converted]
         return convertedMeta
@@ -90,41 +88,40 @@ def openConvert(mdfile):
       return None
 
 def aboutPage():
-  with open(contentDir + 'about.markdown', 'r', 'utf-8') as f:
+  with open(contentDir + u'about.markdown', 'r', 'utf-8') as f:
     rawfile = f.read()
     converted = {'about': md.convert(rawfile),'sitename':sitename,'webRoot':webRoot}
-  converted['typekitId'] = typekitId
-  with open(templateDir + 'about.html','r','utf-8') as f:
+  converted[u'typekitId'] = typekitId
+  with open(templateDir + u'about.html','r','utf-8') as f:
     aboutTemplate = f.read()
-  with open(outputDir + 'about.html', 'w', 'utf-8') as f:
+  with open(outputDir + u'about.html', 'w', 'utf-8') as f:
     aboutResult = pystache.render(aboutTemplate,converted)
     return f.write(aboutResult)
 
 def renderPost(post, posts):
   metadata = {}
-  for k, v in post[0].items():
+  for k, v in post[0].iteritems():
     metadata[k] = v[0]
-  metadata['content'] = post[1]
-  metadata['sitename'] = sitename
-  metadata['webRoot'] = webRoot
-  metadata['author'] = author
-  metadata['typekitId'] = typekitId
-  postName = removePunctuation(metadata['title'])
-  postName = metadata['date'].split(' ')[0] + '-' + postName.replace(' ','-').replace('‑','-')
-  postName = '-'.join(postName.split('-'))
+  metadata[u'content'] = post[1]
+  metadata[u'sitename'] = sitename
+  metadata[u'webRoot'] = webRoot
+  metadata[u'author'] = author
+  metadata[u'typekitId'] = typekitId
+  postName = removePunctuation(metadata[u'title'])
+  postName = metadata[u'date'].split(' ')[0] + '-' + postName.replace(u' ',u'-').replace(u'‑',u'-')
+  postName = u'-'.join(postName.split('-'))
   postFileName = outputDir + postName + '.html'
-  metadata['postURL'] = webRoot + postName + '.html'
-#  metadata['title'] = str(mdx_smartypants.unicode_entities(metadata['title']))
-  metadata['title'] = str(markdown.markdown((metadata['title']), extensions=['smarty']))
-  if 'link' in metadata:
-    templateType = '/post-content-link.html'
+  metadata[u'postURL'] = webRoot + postName + '.html'
+  metadata[u'title'] = unicode(mdx_smartypants.unicode_entities(metadata[u'title']))
+  if u'link' in metadata:
+    templateType = u'/post-content-link.html'
   else:
-    templateType = '/post-content.html'
+    templateType = u'/post-content.html'
   with open(templateDir + templateType,'r','utf-8') as f:
     postContentTemplate = f.read()
     postContent = pystache.render(postContentTemplate,metadata,decode_errors='ignore')
     metadata['post-content'] = postContent
-  with open(templateDir + '/post-page.html','r','utf-8') as f:
+  with open(templateDir + u'/post-page.html','r','utf-8') as f:
     postPageTemplate = f.read()
     postPageResult = pystache.render(postPageTemplate,metadata,decode_errors='ignore')
   with open(postFileName,'w','utf-8') as f:
@@ -136,7 +133,7 @@ def extractTags(html,tag):
   to_extract = soup.findAll(tag)
   for item in to_extract:
     item.extract()
-  return str(soup)
+  return unicode(soup)
 
 def RFC3339Convert(timeString):
   strip = time.strptime(timeString, '%Y-%m-%d %H:%M:%S')
@@ -151,16 +148,16 @@ def feed(posts):
   feedDict = posts[0]
   entryList = str()
   feedDict['gen-time'] = datetime.datetime.utcnow().isoformat('T') + 'Z'
-  with open(templateDir + '/atom.xml','r','utf-8') as f:
+  with open(templateDir + u'/atom.xml','r','utf-8') as f:
     atomTemplate = f.read()
-  with open(templateDir + '/atom-entry.xml','r','utf-8') as f:
+  with open(templateDir + u'/atom-entry.xml','r','utf-8') as f:
     atomEntryTemplate = f.read()
   for e,p in enumerate(posts):
-    p['date'] = RFC3339Convert(p['date'])
-    p['content'] = extractTags(p['content'],'script')
-    p['content'] = extractTags(p['content'],'object')
-    p['content'] = extractTags(p['content'],'iframe')
-    p['title'] = escape(p['title'])
+    p[u'date'] = RFC3339Convert(p[u'date'])
+    p[u'content'] = extractTags(p[u'content'],'script')
+    p[u'content'] = extractTags(p[u'content'],'object')
+    p[u'content'] = extractTags(p[u'content'],'iframe')
+    p[u'title'] = escape(p[u'title'])
     if e < 100:
       atomEntryResult = pystache.render(atomEntryTemplate,p)
       entryList += atomEntryResult
@@ -170,35 +167,35 @@ def feed(posts):
     f.write(feedResult)
 
 def paginatedIndex(posts):
-  indexList = sorted(posts,key=lambda k: k['date'])[::-1]
+  indexList = sorted(posts,key=lambda k: k[u'date'])[::-1]
   feed(indexList)
   postList = []
   for i in indexList:
     postList.append(i['post-content'])
   indexOfPosts = splitEvery(postsPerPage,indexList)
-  with open(templateDir + '/index.html','r','utf-8') as f:
+  with open(templateDir + u'/index.html','r','utf-8') as f:
     indexTemplate = f.read()
   indexDict = {}
-  indexDict['sitename'] = sitename
-  indexDict['typekitId'] = typekitId
+  indexDict[u'sitename'] = sitename
+  indexDict[u'typekitId'] = typekitId
   for e,p in enumerate(indexOfPosts):
     indexDict['post-content'] = p
-    print(e)
+    print e
     #for x in p:
       #print x['title']
     if e == 0:
-      fileName = 'index.html'
+      fileName = u'index.html'
       if len(indexList) > postsPerPage:
-        indexDict['previous'] = webRoot + 'index2.html'
+        indexDict[u'previous'] = webRoot + u'index2.html'
     else:
-      fileName = 'index' + str(e+1) + '.html'
+      fileName = u'index' + str(e+1) + u'.html'
       if e == 1:
-        indexDict['next'] = webRoot + 'index.html'
-        indexDict['previous']  = webRoot + 'index' + str(e+2) + '.html'
+        indexDict[u'next'] = webRoot + u'index.html'
+        indexDict[u'previous']  = webRoot + u'index' + str(e+2) + u'.html'
       else:
-        indexDict['previous'] = webRoot + 'index' + str(e+2) + '.html'
+        indexDict[u'previous'] = webRoot + u'index' + str(e+2) + u'.html'
         if e < len(indexList):
-          indexDict['next'] = webRoot + 'index' + str(e-1) + '.html'
+          indexDict[u'next'] = webRoot + u'index' + str(e-1) + u'.html'
     indexPageResult = pystache.render(indexTemplate,indexDict)
     with open(outputDir + fileName,'w','utf-8') as f:
       f.write(indexPageResult)
