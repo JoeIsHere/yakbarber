@@ -17,6 +17,7 @@ import BeautifulSoup
 import markdown
 import mdx_smartypants
 import cProfile
+from xml.sax.saxutils import escape
 
 # Settings Import
 
@@ -156,12 +157,13 @@ def feed(posts):
     p[u'content'] = extractTags(p[u'content'],'script')
     p[u'content'] = extractTags(p[u'content'],'object')
     p[u'content'] = extractTags(p[u'content'],'iframe')
+    p[u'title'] = escape(p[u'title'])
     if e < 100:
       atomEntryResult = pystache.render(atomEntryTemplate,p)
       entryList += atomEntryResult
   feedDict['atom-entry'] = entryList
   feedResult = pystache.render(atomTemplate,feedDict,string_encode='utf-8')
-  with open(outputDir + 'feed','w','utf-8') as f:
+  with open(outputDir + 'feed.xml','w','utf-8') as f:
     f.write(feedResult)
 
 def paginatedIndex(posts):
