@@ -110,6 +110,7 @@ def renderPost(post, posts):
   metadata['author'] = author
   metadata['typekitId'] = typekitId
   postName = removePunctuation(metadata['title'])
+  postName = postName.decode("utf-8")
   postName = metadata['date'].split(' ')[0] + '-' + postName.replace(' ','-').replace('‑','-')
   postName = '-'.join(postName.split('-'))
   postFileName = outputDir + postName + '.html'
