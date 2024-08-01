@@ -54,7 +54,8 @@ typekitId = settings.typekitId
 # 'meta','fenced_code','footnotes','smart_strong','smarty'
 
 #md = markdown.Markdown(extensions=['meta','smarty','toc'])
-md = markdown.Markdown(extensions=['meta','smarty', TocExtension(anchorlink=True)])
+md = markdown.Markdown(extensions=['meta','smarty', 'footnotes', TocExtension(anchorlink=True)])
+#md = markdown.Markdown(extensions=['meta','smarty', TocExtension(anchorlink=True)])
 
 
 def safeMkDir(f):
@@ -293,6 +294,7 @@ def start():
       mdc = openConvert(contentDir+c)
       if mdc is not None:
         convertedList.append(mdc)
+        md.reset()
 #  print(convertedList[1])
   sortedList = sorted(convertedList, key=lambda x: x[1], reverse=True)
 #  pprint.pprint(convertedList, indent=1, depth=4)
