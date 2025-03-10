@@ -7,7 +7,6 @@ import sys
 import pystache
 from itertools import islice
 import argparse
-import imp
 import importlib.util
 import shutil
 import re
@@ -17,26 +16,23 @@ import pytz
 from bs4 import BeautifulSoup
 import markdown
 from markdown.extensions.toc import TocExtension
-#import mdx_smartypants
-import pprint
 import cProfile
 from xml.sax.saxutils import escape
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
 
 # Settings Import
 
 parser = argparse.ArgumentParser(description='Yak Barber is a fiddly little time sink, and blog system.')
 parser.add_argument('-s','--settings',nargs=1,help='Specify a settings.py file to use.')
 parser.add_argument('-c','--cprofile',action='store_true', default=False,help='Run cProfile to check run time and elements.')
+parser.add_argument('-w','--watch',action='store_true', default=False,help='Enable watchdog observer to monitor contentDir and templateDir.')
 args = parser.parse_args()
-if args.settings is not None:
-  settingsPath = args.settings[0]
-else:
-  settingsPath = './settingstest.py'
-#settings = imp.load_source('settingstest.py',settingsPath)
-settings = imp.load_source('settingstest.py',settingsPath)
-#spec = importlib.util.spec_from_file_location(settingsPath,'settings.py')
-#settings = importlib.util.module_from_spec(spec)
-#spec.loader.exec_module(settings)
+settingsPath = args.settings[0] if args.settings else './settingstest.py'
+
+spec = importlib.util.spec_from_file_location("settings", settingsPath)
+settings = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(settings)
 
 # Settings Local
 
@@ -54,9 +50,10 @@ typekitId = settings.typekitId
 # 'meta','fenced_code','footnotes','smart_strong','smarty'
 
 #md = markdown.Markdown(extensions=['meta','smarty','toc'])
-md = markdown.Markdown(extensions=['meta','smarty', 'footnotes', TocExtension(anchorlink=True)])
-#md = markdown.Markdown(extensions=['meta','smarty', TocExtension(anchorlink=True)])
+md = markdown.Markdown(extensions=['meta','smarty', TocExtension(anchorlink=True)])
 
+# Cache for storing processed posts
+post_cache = {}
 
 def safeMkDir(f):
     d = f
@@ -120,10 +117,14 @@ def decode_value(value):
     return value
     
 def named_entities(text):
-	return text.encode('ascii', 'xmlcharrefreplace')
-	
+    return text.encode('ascii', 'xmlcharrefreplace')
+    
 def convert_http_to_https(url):
-  return re.sub('http://joe-steel', 'https://joe-steel', url)
+  if 'https://' in webRoot:
+    webRootBase = webRoot.split('https://')[1]
+    return re.sub(f'http://{webRootBase}', f'https://{webRootBase}', url)
+  else:
+    return url
 
 def removePunctuation(text):
   text = re.sub(r'\s[^a-zA-Z0-9]\s',' ',text)
@@ -163,7 +164,7 @@ def aboutPage():
     aboutTemplate = f.read()
   with open(outputDir + 'about.html', 'w', encoding='utf-8') as f:
     aboutResult = pystache.render(aboutTemplate,converted)
-    return f.write(aboutResult)
+    f.write(aboutResult)
 
 def extractTags(html,tag):
   soup = BeautifulSoup(html, 'html.parser')
@@ -173,10 +174,10 @@ def extractTags(html,tag):
   return str(soup)
   
 def stripTags(html):
-	soup = BeautifulSoup(html, 'html.parser')
-	text = soup.get_text()
-	return text
-	
+    soup = BeautifulSoup(html, 'html.parser')
+    text = soup.get_text()
+    return text
+    
 
 def renderPost(post, posts):
   metadata = {}
@@ -214,7 +215,7 @@ def renderPost(post, posts):
     postPageResult = pystache.render(postPageTemplate,metadata,decode_errors='ignore')
   with open(postFileName,'w','utf-8') as f:
     f.write(postPageResult)
-  return posts.append(metadata)
+  posts.append(metadata)
 
 
 def RFC3339Convert(timeString):
@@ -291,19 +292,19 @@ def start():
   contentList = os.listdir(contentDir)
   for c in contentList:
     if c.endswith('.md') or c.endswith('.markdown'):
-      mdc = openConvert(contentDir+c)
-      if mdc is not None:
-        convertedList.append(mdc)
-        md.reset()
-#  print(convertedList[1])
+      if c in post_cache:
+        posts.append(post_cache[c])
+      else:
+        mdc = openConvert(contentDir+c)
+        if mdc is not None:
+          convertedList.append(mdc)
+          post_cache[c] = mdc
   sortedList = sorted(convertedList, key=lambda x: x[1], reverse=True)
-#  pprint.pprint(convertedList, indent=1, depth=4)
   aboutPage()
   for post in sortedList:
     renderPost(post,posts)
   paginatedIndex(posts)
   templateResources()
-
 
 def main():
   safeMkDir(contentDir)
@@ -311,8 +312,41 @@ def main():
   safeMkDir(outputDir)
   start()
 
+class ChangeHandler(FileSystemEventHandler):
+    def on_modified(self, event):
+        if event.src_path.startswith(contentDir) and (event.src_path.endswith('.md') or event.src_path.endswith('.markdown')):
+            print(f"Detected change in {event.src_path}. Re-running main()...")
+            post_cache.pop(os.path.basename(event.src_path), None)
+            main()
+        elif event.src_path.startswith(templateDir):
+            print(f"Detected change in {event.src_path}. Clearing cache and re-running main()...")
+            post_cache.clear()
+            main()
+
+    def on_created(self, event):
+        if event.src_path.startswith(contentDir) and (event.src_path.endswith('.md') or event.src_path.endswith('.markdown')):
+            print(f"Detected new file {event.src_path}. Re-running main()...")
+            main()
+        elif event.src_path.startswith(templateDir):
+            print(f"Detected new file {event.src_path}. Clearing cache and re-running main()...")
+            post_cache.clear()
+            main()
+
 if __name__ == "__main__":
   if args.cprofile:
     cProfile.run('main()')
+  elif args.watch:
+    observer = Observer()
+    event_handler = ChangeHandler()
+    observer.schedule(event_handler, path=contentDir, recursive=False)
+    observer.schedule(event_handler, path=templateDir, recursive=True)
+    observer.start()
+    try:
+        main()
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        observer.stop()
+    observer.join()
   else:
     main()
