@@ -13,6 +13,7 @@ templateDir = root + "templates/default/"
 outputDir = root + "output/"
 # This is the title of your website.
 sitename = 'YOUR TITLE'
+author = 'YOUR NAME'
 # From the typekit "kit" get the 7 characters before the ".js"
 # If you're not using Adobe TypeKit, leave this blank and it will not process.
 typekitId = ''
