@@ -253,7 +253,6 @@ def feed(posts):
 
 def paginatedIndex(posts):
   posts = decode_value(posts)
-  print("Posts before sorting:", posts)  # Debugging print statement
   indexList = sorted(posts, key=lambda k: k['date'])[::-1]
   feed(indexList)
   postList = []
@@ -301,7 +300,6 @@ def start():
   aboutPage()
   for post in sortedList:
     renderPost(post, posts)
-  print("Posts after processing:", posts)  # Debugging print statement
   paginatedIndex(posts)
   templateResources()
 
