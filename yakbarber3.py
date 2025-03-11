@@ -304,6 +304,7 @@ def start():
   templateResources()
 
 def main():
+  posts = []
   safeMkDir(contentDir)
   safeMkDir(templateDir)
   safeMkDir(outputDir)
