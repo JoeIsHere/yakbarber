@@ -67,33 +67,33 @@ def splitEvery(n, iterable):
         yield piece
         piece = list(islice(i, n))
 
-def decode_dict(dict):
+def decode_dict(d):
   """Decodes all entries in a dict to UTF-8.
 
   Args:
-    dict: A dict.
+    d: A dict.
 
   Returns:
     A dict with all entries decoded to UTF-8.
   """
 
   new_dict = {}
-  for key, value in dict.items():
+  for key, value in d.items():
     new_dict[key] = decode_value(value)
   return new_dict
 
-def decode_list(list):
+def decode_list(lst):
   """Decodes all entries in a list to UTF-8.
 
   Args:
-    list: A list.
+    lst: A list.
 
   Returns:
     A list with all entries decoded to UTF-8.
   """
 
   new_list = []
-  for item in list:
+  for item in lst:
     new_list.append(decode_value(item))
   return new_list
 
