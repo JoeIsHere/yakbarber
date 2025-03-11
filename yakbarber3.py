@@ -253,56 +253,55 @@ def feed(posts):
 
 def paginatedIndex(posts):
   posts = decode_value(posts)
-  indexList = sorted(posts,key=lambda k: k['date'])[::-1]
+  print("Posts before sorting:", posts)  # Debugging print statement
+  indexList = sorted(posts, key=lambda k: k['date'])[::-1]
   feed(indexList)
   postList = []
   for i in indexList:
     postList.append(i['post-content'])
-  indexOfPosts = splitEvery(postsPerPage,indexList)
-  with open(templateDir + '/index.html','r','utf-8') as f:
+  indexOfPosts = splitEvery(postsPerPage, indexList)
+  with open(templateDir + '/index.html', 'r', 'utf-8') as f:
     indexTemplate = f.read()
   indexDict = {}
   indexDict['sitename'] = sitename
   indexDict['typekitId'] = typekitId
-  for e,p in enumerate(indexOfPosts):
+  for e, p in enumerate(indexOfPosts):
     indexDict['post-content'] = p
-#    print(e)
-#    for x in p:
-#      print(x['date'])
     if e == 0:
       fileName = 'index.html'
       if len(indexList) > postsPerPage:
         indexDict['previous'] = webRoot + 'index2.html'
     else:
-      fileName = 'index' + str(e+1) + '.html'
+      fileName = 'index' + str(e + 1) + '.html'
       if e == 1:
         indexDict['next'] = webRoot + 'index.html'
-        indexDict['previous']  = webRoot + 'index' + str(e+2) + '.html'
+        indexDict['previous'] = webRoot + 'index' + str(e + 2) + '.html'
       else:
-        indexDict['previous'] = webRoot + 'index' + str(e+2) + '.html'
+        indexDict['previous'] = webRoot + 'index' + str(e + 2) + '.html'
         if e < len(indexList):
-          indexDict['next'] = webRoot + 'index' + str(e-1) + '.html'
-    indexPageResult = pystache.render(indexTemplate,indexDict)
-    with open(outputDir + fileName,'w','utf-8') as f:
+          indexDict['next'] = webRoot + 'index' + str(e - 1) + '.html'
+    indexPageResult = pystache.render(indexTemplate, indexDict)
+    with open(outputDir + fileName, 'w', 'utf-8') as f:
       f.write(indexPageResult)
 
 def start():
   convertedList = []
-  posts =[]
+  posts = []
   contentList = os.listdir(contentDir)
   for c in contentList:
     if c.endswith('.md') or c.endswith('.markdown'):
       if c in post_cache:
         posts.append(post_cache[c])
       else:
-        mdc = openConvert(contentDir+c)
+        mdc = openConvert(contentDir + c)
         if mdc is not None:
           convertedList.append(mdc)
           post_cache[c] = mdc
   sortedList = sorted(convertedList, key=lambda x: x[1], reverse=True)
   aboutPage()
   for post in sortedList:
-    renderPost(post,posts)
+    renderPost(post, posts)
+  print("Posts after processing:", posts)  # Debugging print statement
   paginatedIndex(posts)
   templateResources()
 
