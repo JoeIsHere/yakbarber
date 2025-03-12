@@ -319,7 +319,7 @@ if __name__ == "__main__":
   if args.cprofile:
     cProfile.run('main()')
   elif args.watch:
-    observer = Observer()
+    observer = Observer(timeout=60)  # Set the timeout to 60 seconds
     event_handler = ChangeHandler()
     observer.schedule(event_handler, path=contentDir, recursive=False)
     observer.schedule(event_handler, path=templateDir, recursive=True)
