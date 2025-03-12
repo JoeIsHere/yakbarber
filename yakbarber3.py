@@ -52,9 +52,6 @@ typekitId = settings.typekitId
 #md = markdown.Markdown(extensions=['meta','smarty','toc'])
 md = markdown.Markdown(extensions=['meta','smarty', TocExtension(anchorlink=True)])
 
-# Cache for storing processed posts
-post_cache = {}
-
 def safeMkDir(f):
     d = f
     if not os.path.exists(d):
@@ -177,46 +174,51 @@ def stripTags(html):
     soup = BeautifulSoup(html, 'html.parser')
     text = soup.get_text()
     return text
-    
 
-def renderPost(post, posts):
-  metadata = {}
-  for k, v in post[0].items():
-    metadata[k] = decode_value(v[0])
-#    metadata[k] = v[0]
-  metadata['content'] = post[1]
-  metadata['sitename'] = sitename
-  metadata['webRoot'] = webRoot
-  metadata['author'] = author
-  metadata['typekitId'] = typekitId
-  metadata['date'] = str(metadata['date'])
-  if 'image' in metadata:
-    metadata['image'] = metadata['image']
-  else:
-    metadata['image'] = ogpDefaultImage
-  postName = removePunctuation(metadata['title'])
-  postName = metadata['date'].split(' ')[0] + '-' + postName.replace(' ','-').replace('‑','-')
-  postName = '-'.join(postName.split('-'))
-  postFileName = outputDir + postName + '.html'
-  metadata['postURL'] = webRoot + postName + '.html'
-#  metadata['title'] = str(mdx_smartypants.unicode_entities(metadata['title']))
-  metadata['title'] = stripTags(str(markdown.markdown((metadata['title']), extensions=['smarty'])))
-#  metadata['title'] = stripTags(metadata['title'])
-  if 'link' in metadata:
-    templateType = '/post-content-link.html'
-  else:
-    templateType = '/post-content.html'
-  with open(templateDir + templateType,'r','utf-8') as f:
-    postContentTemplate = f.read()
-    postContent = pystache.render(postContentTemplate,metadata,decode_errors='ignore')
-    metadata['post-content'] = postContent
-  with open(templateDir + '/post-page.html','r','utf-8') as f:
-    postPageTemplate = f.read()
-    postPageResult = pystache.render(postPageTemplate,metadata,decode_errors='ignore')
-  with open(postFileName,'w','utf-8') as f:
-    f.write(postPageResult)
-  posts.append(metadata)
+def processPosts(contentDir):
+    posts = []
+    contentList = os.listdir(contentDir)
+    for c in contentList:
+        if c.endswith('.md') or c.endswith('.markdown'):
+            mdc = openConvert(contentDir + c)
+            if mdc is not None:
+                posts.append(mdc)
+    return posts
 
+def renderPost(post):
+    metadata = {}
+    for k, v in post[0].items():
+        metadata[k] = decode_value(v[0])
+    metadata['content'] = post[1]
+    metadata['sitename'] = sitename
+    metadata['webRoot'] = webRoot
+    metadata['author'] = author
+    metadata['typekitId'] = typekitId
+    metadata['date'] = str(metadata['date'])
+    if 'image' in metadata:
+        metadata['image'] = metadata['image']
+    else:
+        metadata['image'] = ogpDefaultImage
+    postName = removePunctuation(metadata['title'])
+    postName = metadata['date'].split(' ')[0] + '-' + postName.replace(' ','-').replace('‑','-')
+    postName = '-'.join(postName.split('-'))
+    postFileName = outputDir + postName + '.html'
+    metadata['postURL'] = webRoot + postName + '.html'
+    metadata['title'] = stripTags(str(markdown.markdown((metadata['title']), extensions=['smarty'])))
+    if 'link' in metadata:
+        templateType = '/post-content-link.html'
+    else:
+        templateType = '/post-content.html'
+    with open(templateDir + templateType,'r','utf-8') as f:
+        postContentTemplate = f.read()
+        postContent = pystache.render(postContentTemplate,metadata,decode_errors='ignore')
+        metadata['post-content'] = postContent
+    with open(templateDir + '/post-page.html','r','utf-8') as f:
+        postPageTemplate = f.read()
+        postPageResult = pystache.render(postPageTemplate,metadata,decode_errors='ignore')
+    with open(postFileName,'w','utf-8') as f:
+        f.write(postPageResult)
+    return metadata
 
 def RFC3339Convert(timeString):
   timeString = decode_value(timeString)
@@ -226,7 +228,6 @@ def RFC3339Convert(timeString):
   ndt = dt.replace(tzinfo=pacific)
   utc = pytz.utc
   return ndt.astimezone(utc).isoformat().split('+')[0] + 'Z'
-
 
 def feed(posts):
   posts = decode_value(posts)
@@ -284,27 +285,14 @@ def paginatedIndex(posts):
       f.write(indexPageResult)
 
 def start():
-  convertedList = []
-  posts = []
-  contentList = os.listdir(contentDir)
-  for c in contentList:
-    if c.endswith('.md') or c.endswith('.markdown'):
-      if c in post_cache:
-        posts.append(post_cache[c])
-      else:
-        mdc = openConvert(contentDir + c)
-        if mdc is not None:
-          convertedList.append(mdc)
-          post_cache[c] = mdc
-  sortedList = sorted(convertedList, key=lambda x: x[1], reverse=True)
+  posts = processPosts(contentDir)
+  sortedPosts = sorted(posts, key=lambda x: x[1], reverse=True)
   aboutPage()
-  for post in sortedList:
-    renderPost(post, posts)
-  paginatedIndex(posts)
+  renderedPosts = [renderPost(post) for post in sortedPosts]
+  paginatedIndex(renderedPosts)
   templateResources()
 
 def main():
-  posts = []
   safeMkDir(contentDir)
   safeMkDir(templateDir)
   safeMkDir(outputDir)
@@ -314,11 +302,9 @@ class ChangeHandler(FileSystemEventHandler):
     def on_modified(self, event):
         if event.src_path.startswith(contentDir) and (event.src_path.endswith('.md') or event.src_path.endswith('.markdown')):
             print(f"Detected change in {event.src_path}. Re-running main()...")
-            post_cache.pop(os.path.basename(event.src_path), None)
             main()
         elif event.src_path.startswith(templateDir):
-            print(f"Detected change in {event.src_path}. Clearing cache and re-running main()...")
-            post_cache.clear()
+            print(f"Detected change in {event.src_path}. Re-running main()...")
             main()
 
     def on_created(self, event):
@@ -326,8 +312,7 @@ class ChangeHandler(FileSystemEventHandler):
             print(f"Detected new file {event.src_path}. Re-running main()...")
             main()
         elif event.src_path.startswith(templateDir):
-            print(f"Detected new file {event.src_path}. Clearing cache and re-running main()...")
-            post_cache.clear()
+            print(f"Detected new file {event.src_path}. Re-running main()...")
             main()
 
 if __name__ == "__main__":
