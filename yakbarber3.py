@@ -234,7 +234,7 @@ def RFC3339Convert(timeString):
 
 def feed(posts):
   posts = decode_value(posts)
-  posts = sorted(posts, key=lambda k: k['date'])[::-1]
+  # posts = sorted(posts, key=lambda k: k['date'])[::-1]
   feedDict = posts[0]
   entryList = str()
   feedDict['gen-time'] = datetime.datetime.utcnow().isoformat('T') + 'Z'
@@ -258,7 +258,8 @@ def feed(posts):
 
 def paginatedIndex(posts):
   posts = decode_value(posts)
-  indexList = sorted(posts, key=lambda k: k['date'])[::-1]
+  # indexList = sorted(posts, key=lambda k: k['date'])[::-1]
+  indexList = posts
   postList = []
   for i in indexList:
     postList.append(i['post-content'])
@@ -291,7 +292,7 @@ async def start():
   posts = processPosts(contentDir)
   aboutPage()
   renderedPosts = await asyncio.gather(*[renderPost(post) for post in posts])
-  sortedRenderedPosts = sorted(renderedPosts, key=lambda x: x[1], reverse=True)
+  sortedRenderedPosts = sorted(renderedPosts, key=lambda x: x['date'])[::-1]
   paginatedIndex(sortedRenderedPosts)
   feed(sortedRenderedPosts)  # Ensure the RSS feed is regenerated
   templateResources()
