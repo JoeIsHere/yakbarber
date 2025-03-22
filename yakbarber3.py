@@ -308,17 +308,17 @@ class ChangeHandler(FileSystemEventHandler):
         if event.src_path.startswith(contentDir) and (event.src_path.endswith('.md') or event.src_path.endswith('.markdown')):
             print(f"Detected change in {event.src_path}. Re-running main()...")
             main()
-        elif event.src_path.startswith(templateDir):
-            print(f"Detected change in {event.src_path}. Re-running main()...")
-            main()
+        # elif event.src_path.startswith(templateDir):
+        #     print(f"Detected change in {event.src_path}. Re-running main()...")
+        #     main()
 
     def on_created(self, event):
         if event.src_path.startswith(contentDir) and (event.src_path.endswith('.md') or event.src_path.endswith('.markdown')):
             print(f"Detected new file {event.src_path}. Re-running main()...")
             main()
-        elif event.src_path.startswith(templateDir) and (event.src_path.endswith('.html') or event.src_path.endswith('.xml')):
-            print(f"Detected new file {event.src_path}. Re-running main()...")
-            main()
+        # elif event.src_path.startswith(templateDir) and (event.src_path.endswith('.html') or event.src_path.endswith('.xml')):
+        #     print(f"Detected new file {event.src_path}. Re-running main()...")
+        #     main()
 
 if __name__ == "__main__":
   if args.cprofile:
