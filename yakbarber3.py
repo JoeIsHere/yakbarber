@@ -20,6 +20,8 @@ import cProfile
 from xml.sax.saxutils import escape
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+import asyncio
+import threading
 
 # Settings Import
 
@@ -47,10 +49,11 @@ ogpDefaultImage = settings.ogpDefaultImage
 postsPerPage = settings.postsPerPage
 typekitId = settings.typekitId
 
-# 'meta','fenced_code','footnotes','smart_strong','smarty'
-
-#md = markdown.Markdown(extensions=['meta','smarty','toc'])
+# Initialize Markdown
 md = markdown.Markdown(extensions=['meta','smarty', TocExtension(anchorlink=True)])
+
+# Lock to prevent race conditions
+lock = threading.Lock()
 
 def safeMkDir(f):
     d = f
@@ -132,7 +135,7 @@ def removePunctuation(text):
 
 def templateResources():
   tList = os.listdir(templateDir)
-  tList = [x for x in tList if ('.html' or '.xml') not in x]
+  tList = [x for x in tList if not x.endswith(('.html', '.xml'))]
   for tr in tList:
       fullPath = os.path.join(templateDir, tr)
       if (os.path.isfile(fullPath)):
@@ -185,7 +188,7 @@ def processPosts(contentDir):
                 posts.append(mdc)
     return posts
 
-def renderPost(post):
+async def renderPost(post):
     metadata = {}
     for k, v in post[0].items():
         metadata[k] = decode_value(v[0])
@@ -231,6 +234,7 @@ def RFC3339Convert(timeString):
 
 def feed(posts):
   posts = decode_value(posts)
+  posts = sorted(posts, key=lambda k: k['date'])[::-1]
   feedDict = posts[0]
   entryList = str()
   feedDict['gen-time'] = datetime.datetime.utcnow().isoformat('T') + 'Z'
@@ -284,19 +288,21 @@ def paginatedIndex(posts):
     with open(outputDir + fileName, 'w', 'utf-8') as f:
       f.write(indexPageResult)
 
-def start():
+async def start():
   posts = processPosts(contentDir)
   sortedPosts = sorted(posts, key=lambda x: x[1], reverse=True)
   aboutPage()
-  renderedPosts = [renderPost(post) for post in sortedPosts]
+  renderedPosts = await asyncio.gather(*[renderPost(post) for post in sortedPosts])
   paginatedIndex(renderedPosts)
+  feed(renderedPosts)  # Ensure the RSS feed is regenerated
   templateResources()
 
 def main():
-  safeMkDir(contentDir)
-  safeMkDir(templateDir)
-  safeMkDir(outputDir)
-  start()
+  with lock:
+    safeMkDir(contentDir)
+    safeMkDir(templateDir)
+    safeMkDir(outputDir)
+    asyncio.run(start())
 
 class ChangeHandler(FileSystemEventHandler):
     def on_modified(self, event):
@@ -311,7 +317,7 @@ class ChangeHandler(FileSystemEventHandler):
         if event.src_path.startswith(contentDir) and (event.src_path.endswith('.md') or event.src_path.endswith('.markdown')):
             print(f"Detected new file {event.src_path}. Re-running main()...")
             main()
-        elif event.src_path.startswith(templateDir):
+        elif event.src_path.startswith(templateDir) and (event.src_path.endswith('.html') or event.src_path.endswith('.xml')):
             print(f"Detected new file {event.src_path}. Re-running main()...")
             main()
 
@@ -319,7 +325,7 @@ if __name__ == "__main__":
   if args.cprofile:
     cProfile.run('main()')
   elif args.watch:
-    observer = Observer(timeout=60)  # Set the timeout to 60 seconds
+    observer = Observer(timeout=180)  # Set the timeout to 180 seconds (3 minutes)
     event_handler = ChangeHandler()
     observer.schedule(event_handler, path=contentDir, recursive=False)
     observer.schedule(event_handler, path=templateDir, recursive=True)
