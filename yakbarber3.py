@@ -259,7 +259,6 @@ def feed(posts):
 def paginatedIndex(posts):
   posts = decode_value(posts)
   indexList = sorted(posts, key=lambda k: k['date'])[::-1]
-  feed(indexList)
   postList = []
   for i in indexList:
     postList.append(i['post-content'])
@@ -290,11 +289,11 @@ def paginatedIndex(posts):
 
 async def start():
   posts = processPosts(contentDir)
-  sortedPosts = sorted(posts, key=lambda x: x[1], reverse=True)
   aboutPage()
-  renderedPosts = await asyncio.gather(*[renderPost(post) for post in sortedPosts])
-  paginatedIndex(renderedPosts)
-  feed(renderedPosts)  # Ensure the RSS feed is regenerated
+  renderedPosts = await asyncio.gather(*[renderPost(post) for post in posts])
+  sortedRenderedPosts = sorted(renderedPosts, key=lambda x: x[1], reverse=True)
+  paginatedIndex(sortedRenderedPosts)
+  feed(sortedRenderedPosts)  # Ensure the RSS feed is regenerated
   templateResources()
 
 def main():
