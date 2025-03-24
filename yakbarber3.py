@@ -3,7 +3,6 @@
 
 from codecs import open
 import os
-import sys
 import pystache
 from itertools import islice
 import argparse
@@ -237,7 +236,7 @@ def feed(posts):
   # posts = sorted(posts, key=lambda k: k['date'])[::-1]
   feedDict = posts[0]
   entryList = str()
-  feedDict['gen-time'] = datetime.datetime.utcnow().isoformat('T') + 'Z'
+  feedDict['gen-time'] = datetime.datetime.now(datetime.timezone.utc).isoformat('T') + 'Z'
   with open(templateDir + '/atom.xml','r','utf-8') as f:
     atomTemplate = f.read()
   with open(templateDir + '/atom-entry.xml','r','utf-8') as f:
@@ -248,7 +247,7 @@ def feed(posts):
     p['content'] = extractTags(p['content'],'object')
     p['content'] = extractTags(p['content'],'iframe')
     p['title'] = stripTags(p['title'])
-    if e < 100:
+    if e < 50:
       atomEntryResult = pystache.render(atomEntryTemplate,p)
       entryList += atomEntryResult
   feedDict['atom-entry'] = entryList
@@ -289,8 +288,8 @@ def paginatedIndex(posts):
       f.write(indexPageResult)
 
 async def start():
-  posts = processPosts(contentDir)
   aboutPage()
+  posts = processPosts(contentDir)
   renderedPosts = await asyncio.gather(*[renderPost(post) for post in posts])
   sortedRenderedPosts = sorted(renderedPosts, key=lambda x: x['date'])[::-1]
   paginatedIndex(sortedRenderedPosts)
