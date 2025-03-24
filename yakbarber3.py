@@ -303,38 +303,54 @@ def main():
     safeMkDir(outputDir)
     asyncio.run(start())
 
+import threading
+
+# Initialize a debounce timer and a flag to track execution
+debounce_timer = None
+is_running = False
+
 class ChangeHandler(FileSystemEventHandler):
     def on_modified(self, event):
         if event.src_path.startswith(contentDir) and (event.src_path.endswith('.md') or event.src_path.endswith('.markdown')):
-            print(f"Detected change in {event.src_path}. Re-running main()...")
-            main()
-        # elif event.src_path.startswith(templateDir):
-        #     print(f"Detected change in {event.src_path}. Re-running main()...")
-        #     main()
+            print(f"Detected change in {event.src_path}. Scheduling main()...")
+            self.schedule_main()
 
     def on_created(self, event):
         if event.src_path.startswith(contentDir) and (event.src_path.endswith('.md') or event.src_path.endswith('.markdown')):
-            print(f"Detected new file {event.src_path}. Re-running main()...")
-            main()
-        # elif event.src_path.startswith(templateDir) and (event.src_path.endswith('.html') or event.src_path.endswith('.xml')):
-        #     print(f"Detected new file {event.src_path}. Re-running main()...")
-        #     main()
+            print(f"Detected new file {event.src_path}. Scheduling main()...")
+            self.schedule_main()
+
+    def schedule_main(self):
+        global debounce_timer
+        if debounce_timer is not None:
+            debounce_timer.cancel()
+        debounce_timer = threading.Timer(3.0, self.run_main)  # 3-second debounce window
+        debounce_timer.start()
+
+    def run_main(self):
+        global is_running
+        if not is_running:
+            is_running = True
+            try:
+                main()
+            finally:
+                is_running = False
 
 if __name__ == "__main__":
-  if args.cprofile:
-    cProfile.run('main()')
-  elif args.watch:
-    observer = Observer(timeout=180)  # Set the timeout to 180 seconds (3 minutes)
-    event_handler = ChangeHandler()
-    observer.schedule(event_handler, path=contentDir, recursive=False)
-    observer.schedule(event_handler, path=templateDir, recursive=True)
-    observer.start()
-    try:
+    if args.cprofile:
+        cProfile.run('main()')
+    elif args.watch:
+        observer = Observer(timeout=180)  # Set the timeout to 180 seconds (3 minutes)
+        event_handler = ChangeHandler()
+        observer.schedule(event_handler, path=contentDir, recursive=False)
+        observer.schedule(event_handler, path=templateDir, recursive=True)
+        observer.start()
+        try:
+            main()
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            observer.stop()
+        observer.join()
+    else:
         main()
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        observer.stop()
-    observer.join()
-  else:
-    main()
