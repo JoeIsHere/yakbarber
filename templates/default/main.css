@@ -209,3 +209,44 @@ a.sitetitle {
     max-width: 40.3ch;
   }
 }
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: hsl(220, 13%, 18%);
+    --primary-color: hsl(205, 69%, 70%);
+    --primary-color-hover: hsl(205, 69%, 80%);
+    --secondary-color: hsl(49, 26%, 80%);
+    --blockquote-bg: hsl(220, 13%, 25%);
+    --font-family-sans: 'Source Sans Pro', 'Avenir Next', 'Avenir', 'Proxima Nova', 'Tahoma', sans-serif;
+    --font-family-mono: 'Ubuntu Mono', 'Courier Prime', 'Typewriter', 'Courier', monospace;
+    --font-size-base: 1.4em;
+    --line-height-base: 1.8em;
+    --max-width: 800px;
+  }
+
+  body {
+    background-color: var(--background-color);
+    color: hsl(0, 0%, 90%);
+  }
+
+  a {
+    color: var(--primary-color);
+  }
+
+  a:hover {
+    color: var(--primary-color-hover);
+  }
+
+  blockquote {
+    background-color: var(--blockquote-bg);
+  }
+
+  #container {
+    background-color: var(--background-color);
+  }
+
+  .post-content {
+    background-color: var(--background-color);
+  }
+}
