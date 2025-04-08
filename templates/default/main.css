@@ -1,278 +1,211 @@
 /* Default Template CSS */
 
+/* Variables */
+:root {
+  --background-color: hsl(60, 100%, 98%);
+  --primary-color: hsl(205, 69%, 49%);
+  --primary-color-hover: hsl(205, 69%, 70%);
+  --secondary-color: hsl(49, 26%, 66%);
+  --blockquote-bg: hsl(49, 26%, 90%);
+  --font-family-sans: 'Source Sans Pro', 'Avenir Next', 'Avenir', 'Proxima Nova', 'Tahoma', sans-serif;
+  --font-family-mono: 'Ubuntu Mono', 'Courier Prime', 'Typewriter', 'Courier', monospace;
+  --font-size-base: 1.4em;
+  --line-height-base: 1.8em;
+  --max-width: 800px;
+}
+
+/* General Styles */
 body {
-  background-color:hsl(60, 100%, 98%);
-  font-family: 'Source Sans Pro','Avenir Next','Avenir','Proxima Nova','Tahoma',sans-serif;
-  font-size: 1.4em;
-  line-height: 1.8em;
-  word-wrap: break-word;       /* Internet Explorer 5.5+ */
-  /*background:url("http://joe-steel.com/images/grand_canyon/_DSC0622.jpg") no-repeat center center fixed;*/
-  /*background-image:
-    linear-gradient(
-      to bottom, 
-      #5C6B7E, 
-      #979296, 
-      #B1AAA7, 
-      #EAC5AA,
-      #FFC881
-    );*/
+  background-color: var(--background-color);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  word-wrap: break-word;
+}
+
+h1, h2, h3, h4 {
+  text-align: center;
 }
 
 h1 {
-  text-align: center;
-  line-height: 1.0em;
-  font-size: 4.0em;
-  word-spacing: 4.0em;
-  font-weight:100;
+  font-size: 4em;
+  font-weight: 100;
+  word-spacing: 4em;
 }
 
 h2 {
-  padding-top:1.0em;
-  text-align: center;
-  font-size: 2.0em;
-  line-height: 1.4em
+  font-size: 2em;
+  padding-top: 1em;
 }
 
 h3 {
-  padding-top:0.8em;
   font-size: 1.8em;
-  line-height:1.4em;
-  text-align: center;
+  padding-top: 0.8em;
 }
 
-h4 {padding-left:1.0em;}
+h4 {
+  padding-left: 1em;
+}
 
 a {
   text-decoration: none;
-  color:hsl(205, 69%, 49%);
+  color: var(--primary-color);
 }
 
 a:visited {
-  color:hsl(205, 69%, 49%);
+  color: var(--primary-color);
 }
 
 a:hover {
-  color:hsl(205, 69%, 70%);
+  color: var(--primary-color-hover);
 }
 
 p {
   line-height: 1.6em;
-  padding-left: 1.0em;
-  padding-right: 1.0em;
-}
-
-hr {
-  border-style: solid;
-  border-width: 0px;
-  color:hsl(49, 26%, 66%);
-  display:none;
+  padding: 0 1em;
 }
 
 blockquote {
-  background-color:hsl(49, 26%, 90%);
-  padding:0.8em;
-  border-radius:0.3em;
-  margin:0 1.0em 0 1.0em;
+  background-color: var(--blockquote-bg);
+  padding: 0.8em;
+  border-radius: 0.3em;
+  margin: 0 1em;
 }
 
 code {
-  font-family: 'Ubuntu Mono','BitStream Vera Sans','Inconsolata',monospace;
-  border-radius:0.3em;
+  font-family: var(--font-family-mono);
+  border-radius: 0.3em;
 }
 
 pre {
-  font-family:'Courier Prime','Typewriter','Courier',monospace;
-  white-space: pre-wrap;       /* css-3 */
-  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-  white-space: -pre-wrap;      /* Opera 4-6 */
-  white-space: -o-pre-wrap;    /* Opera 7 */
-  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  font-family: var(--font-family-mono);
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 img {
-  max-width:800px;
-  width:100%;
-  padding:0;
-  margin:0 auto;
+  max-width: var(--max-width);
+  width: 100%;
+  margin: 0 auto;
 }
 
 figure {
-  max-width:800px;
-  /*margin-top: 0;
-  margin-right: 0;
-  margin-bottom: 0;
-  margin-left: 1.0em;*/
+  max-width: var(--max-width);
   margin: 0 auto;
-  width:100%;
-  padding:0;
+  width: 100%;
 }
 
 figcaption {
-  font-size:0.8em;
-  font-style:italic;
-  font-weight:100;
-  text-indent:1.0em;
-  margin-left: auto;
-  margin-right: auto;
-  padding:0;
+  font-size: 0.8em;
+  font-style: italic;
+  font-weight: 100;
+  text-indent: 1em;
 }
 
 #container {
-  width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color:hsl(60, 100%, 98%);
+  width: var(--max-width);
+  margin: 0 auto;
+  background-color: var(--background-color);
 }
 
 .date {
   font-size: 0.8em;
   line-height: 0.5em;
-  text-indent: 1.0em;
+  text-indent: 1em;
   font-weight: 100;
 }
 
-#multwrap {
-}
-
-#sitehead {
-  min-height:140px;
-  padding-top:2.0em;
-  padding-bottom:1.0em;
-  min-width:800px;
-  /*background:url("http://joe-steel.com/images/grand_canyon/_DSC0622.jpg") no-repeat center center fixed;*/
-}
-
-.topnav {
-  position:absolute;
-  /*padding:0.3em 0.5em 0.3em 0.5em;*/
-  margin-left:auto;
-  margin-right:auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  text-align:center;
-  max-width:800px;
-  
-  
-  word-spacing:2.0em;
-}
-
-.botnav {
-  text-align:center;
-  
-  
-  word-spacing:2.0em;
-  padding-top:1.0em;
-}
-
-a.botnav {
-  
-  position:relative;
-}
-
-a.topnav {
-  
-  position:relative;
-}
-
-#next {
-  
-  position:relative;
-  
-  float:left;
-  padding-left:0.5em;
-}
-
-#previous {
-  
-  position:relative;
-  
-  float:right;
-  padding-right:0.5em;
-}
-
-.permalink{
-}
-
 .post-content {
-  background-color:hsl(60, 100%, 98%);
-  padding-bottom:1.0em;
+  background-color: var(--background-color);
+  padding-bottom: 1em;
 }
 
 .category {
   font-size: 0.8em;
   line-height: 0.5em;
-  text-indent: 1.0em;
+  text-indent: 1em;
   font-weight: 100;
-  display:none;
+  display: none;
 }
 
 a.sitetitle {
-  font-weight:100;
-  color:black;
-}
-
-.twitter-tweet { margin: 0px auto !important;
-width: 100% !important; }
-
-@media screen and (min-width:640px) {}
-
-@media all and (max-device-width: 480px) {
-    h1 {
-          text-align: center;
-          line-height: 1.0em;
-          font-size: 2.0em;
-          word-spacing: 1.0em;
-    } 
-    body {
-        font-size:3.0em;
-margin: 0;
-background-size:cover;
-    }
-    ol,ul {
-      margin-left:0.2em;
-    }
-#container {width:40.3ch;}
-img {max-width:40.3ch}
-
-}
-
-
-@media screen and (min-width:200px) and (max-width:639px) {
-  #container,#sitehead {
-    width:100%; 
-    min-width:100px;
-    min-height:100px;
-    margin-top:0.5em;
-    /*padding-top:0.5em;*/
-    padding: 0;
-    height:2.0em;
-  }
-  body {
-    font-size:3.0em;
-  }
-  p {font-size:3.0em;}
-  h1 {font-size:2.0em;}
-
+  font-weight: 100;
+  color: black;
 }
 
 .videowrapper {
-    float: none;
-    clear: both;
-    width: 100%;
-    position: relative;
-    padding-bottom: 56.25%;
-    padding-top: 25px;
-    padding-left:0;
-    padding-right:0;
-    margin:0;
-    height: 0;
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
 }
+
 .videowrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Navigation */
+.topnav, .botnav {
+  text-align: center;
+  word-spacing: 2em;
+}
+
+#next {
+  float: left;
+  padding-left: 0.5em;
+}
+
+#previous {
+  float: right;
+  padding-right: 0.5em;
+}
+
+/* Media Queries */
+@media screen and (max-width: 639px) {
+  #container, #sitehead {
     width: 100%;
-    height: 100%;
-    padding:0
+    margin-top: 0.5em;
+    padding: 0;
+  }
+
+  body {
+    font-size: 3em;
+  }
+
+  p {
+    font-size: 3em;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 2em;
+    word-spacing: 1em;
+  }
+
+  body {
+    font-size: 3em;
+    margin: 0;
+    background-size: cover;
+  }
+
+  ol, ul {
+    margin-left: 0.2em;
+  }
+
+  #container {
+    width: 40.3ch;
+  }
+
+  img {
+    max-width: 40.3ch;
+  }
 }
