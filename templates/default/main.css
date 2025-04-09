@@ -56,13 +56,12 @@ h4 {
   padding-left: 1em;
 }
 
-a {
-  text-decoration: none;
-  color: var(--primary-color);
+a:not(h1 a):hover {
+  color: var(--primary-color-hover);
 }
 
-a:hover {
-  color: var(--primary-color-hover);
+a:not(h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, .topnav a, .botnav a) {
+  text-decoration: underline;
 }
 
 p {
@@ -152,7 +151,7 @@ a.sitetitle {
 
 /* Navigation */
 .topnav, .botnav {
-  text-align: center;
+  text-align: right;
   word-spacing: 2em;
   padding-top: 1em;
 }
@@ -218,6 +217,10 @@ a.sitetitle {
     --primary-color-hover: hsl(205, 69%, 80%);
     --secondary-color: hsl(49, 26%, 80%);
     --blockquote-bg: hsl(220, 13%, 25%);
+  }
+
+  h1 {
+    color: hsl(220, 13%, 25%);
   }
 
   body {
