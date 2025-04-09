@@ -1,20 +1,27 @@
 /* Default Template CSS */
 
-/* Base Styles */
-html {
-  font-size: 16px;
-}
+html {font-size:16px;}
 
 body {
+  /*background-color:hsl(60, 100%, 98%);*/
+  font-family: 'Source Sans Pro','Avenir Next','Avenir','Proxima Nova','Tahoma',sans-serif;
   font-size: 1.4em;
   line-height: 1.8em;
   margin: 0 auto;
-  word-wrap: break-word;
-  font-family: 'Source Sans Pro', 'Avenir Next', 'Avenir', 'Proxima Nova', 'Tahoma', sans-serif;
   padding-left: 0;
   padding-right: 0;
-  background-color: hsl(60, 100%, 98%);
-  color: hsl(205, 15%, 20%);
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  /*background:url("https://joe-steel.com/images/grand_canyon/_DSC0622.jpg") no-repeat center center fixed;*/
+  /*background-image:
+    linear-gradient(
+      to bottom, 
+      #5C6B7E, 
+      #979296, 
+      #B1AAA7, 
+      #EAC5AA,
+      #FFC881
+    );*/
+/*     width:100vw; */
 }
 
 h1 {
@@ -33,7 +40,7 @@ h2 {
   padding-right:1.0em;
   text-align: center;
   font-size: 2.4rem;
-  line-height: 1.4em;
+  line-height: 1.4em
 }
 
 h3 {
@@ -54,19 +61,28 @@ h4 {
 
 a {
   text-decoration: none;
-  color: hsl(205, 69%, 49%);
-}
-
-a:not(h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, .topnav a, .botnav a) {
-  text-decoration: underline;
+  color:hsl(205, 69%, 49%);
 }
 
 a:visited {
   color:hsl(205, 69%, 49%);
 }
 
+h1 > a:visited,
+h2 > a:visited,
+h3 > a:visited,
+h4 > a:visited,
+h5 > a:visited,
+h6 > a:visited {
+/*   color: inherit; */ /* Or your desired color */
+}
+
+a:not(h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, .topnav a, .botnav a) {
+  text-decoration: underline;
+}
+
 a:hover {
-  color: hsl(205, 69%, 70%);
+  color:hsl(205, 69%, 70%);
 }
 
 p {
@@ -77,37 +93,39 @@ p {
 
 ol,ul {
   margin-left: 1.0rem;
+
 }
 
 hr {
   border-style: solid;
   border-width: 0.2rem;
   border-radius: 0.2rem;
-  color: hsl(49, 26%, 66%);
-  opacity: 50%;
-  width: 95%;
+  color:hsl(49, 26%, 66%);
+  opacity:50%;
+  width: 95%
 }
 
 blockquote {
-  background-color: hsl(49, 26%, 90%);
-  padding: 0.8em;
-  border-radius: 0.3em;
-  margin: 0 1.0em 0 1.0em;
+  background-color:hsl(49, 26%, 90%);
+  padding:0.8em;
+  border-radius:0.3em;
+  margin:0 1.0em 0 1.0em;
 }
 
 blockquote.twitter-tweet {
-  padding: inherit;
-  width:100% !important;
-  margin: auto;
+padding: inherit;
+width:100% !important;
+margin: auto;
 }
 
 code {
+/*   font-family: 'Source Code Pro','Ubuntu Mono','BitStream Vera Sans','Inconsolata',monospace; */
   font-family: source-code-pro, monospace;
   font-size:1.0em;
   border-radius:0.3em;
   padding-left:0.5rem;
   padding-right:0.5rem;
-  background-color: hsl(49, 26%, 90%);
+  background-color:hsl(49, 26%, 90%);
 }
 
 pre {
@@ -123,10 +141,9 @@ pre {
 }
 
 img,video,figure {
-  max-width:10000px;
+/*   max-width:800px; */
   width:100%;
-  padding-left:0;
-  padding-right:0;
+  padding:0;
   margin:0 auto;
 }
 
@@ -134,14 +151,26 @@ figcaption {
   font-size:0.8em;
   font-style:italic;
   font-weight:100;
+/*   text-indent:1.0em; */
   line-height: 1.6em;
   padding-left: 1.0em;
   padding-right: 1.0em;
+/* 
+  margin-left: auto;
+  margin-right: auto;
+  padding:0;
+ */
 }
 
-#container, #sitehead, .content {
-  width: 100%;
-  margin: 0 auto;
+#container {
+  min-width:50rem;
+  max-width:50rem;
+  width:50rem;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  /*background-color:hsl(60, 100%, 98%);*/
 }
 
 .date {
@@ -151,9 +180,9 @@ figcaption {
 }
 
 #multwrap {
-  padding-left: 0;
-  padding-right: 0;
-  margin: 0 auto;
+	padding-left: 0;
+	padding-right: 0;
+	margin: 0 auto;
 }
 
 #sitehead {
@@ -161,46 +190,69 @@ figcaption {
   padding-top:2.0rem;
   padding-bottom:1.0rem;
   margin-top:1.0rem;
+  min-width:50rem;
+  max-width:50rem;
+  /*background:url("https://joe-steel.com/images/grand_canyon/_DSC0622.jpg") no-repeat center center fixed;*/
 }
 
 .topnav {
+/*   position:absolute; */
+  /*padding:0.3em 0.5em 0.3em 0.5em;*/
+/*   margin-left:auto; */
   margin-right:1.0rem;
+/* 
+  top: 0;
+  left: 0;
+  right: 0;
+ */
   text-align:right;
+/*   max-width:50rem; */
   font-size:1.0rem;
   padding-top:1.0rem;
+/*   word-spacing:2.0em; */
 }
 
 .botnav {
   text-align:center;
+  
+  
   word-spacing:2.0em;
   padding-top:1.0em;
 }
 
 a.botnav {
+  
   position:relative;
 }
 
 a.topnav {
+  
   position:relative;
 }
 
 #next {
+  
   position:relative;
+  
   float:left;
   padding-left:0.5em;
 }
 
 #previous {
+  
   position:relative;
+  
   float:right;
   padding-right:0.5em;
 }
 
-.permalink {
+.permalink{
 }
 
 .post-content {
+  /*background-color:hsl(60, 100%, 98%);*/
   padding-bottom:1.0em;
+/*   border-bottom: 0.1rem solid; */
 }
 
 .category {
@@ -216,124 +268,99 @@ a.sitetitle {
   color:black;
 }
 
-.twitter-tweet {
-  margin: 0px auto !important;
-  width: 100% !important;
+.twitter-tweet { margin: 0px auto !important;
+width: 100% !important; }
+
+img,video,figure {
+  max-width:10000px;
+  width:100%;
+  padding-left:0;
+  padding-right:0;
+  margin:0 auto;
 }
 
 .content {
-  padding-left: 0;
-  padding-right: 0;
-  margin: 0 auto;
-}
+	padding-left: 0;
+	padding-right: 0;
+	margin: 0 auto;
+	}
+ 
 
 .videowrapper {
-  float: none;
-  clear: both;
-  width: 100%;
-  position: relative;
-  padding-bottom: 56.25%;
-  padding-top: 25px;
-  padding-left:0;
-  padding-right:0;
-  margin:0;
-  height: 0;
+    float: none;
+    clear: both;
+    width: 100%;
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 25px;
+    padding-left:0;
+    padding-right:0;
+    margin:0;
+    height: 0;
 }
-
 .videowrapper iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  padding:0;
-  margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding:0
+    margin:0;
 }
 
-/* Media Queries */
+@media screen and (min-width:640px) {}
 
-/* Small Devices (max-width: 480px) */
-@media screen and (max-width: 480px) {
-  html {
-    font-size: 8px;
+@media all and (max-device-width: 480px) {
+  html {font-size:8px;}
+  #container,#sitehead,.content,body,html {
+  width:100vw;
   }
+  #sitehead {margin-top:4.0rem;}
 
-  body {
-    font-size: 1rem;
-    margin: 0 auto;
-    background-size: cover;
-  }
+/* 
+    h1 {
+          text-align: center;
+          line-height: 1.0em;
+          font-size: 2.0em;
+          word-spacing: 1.0em;
+    } 
+ */
+    body {
+        font-size:1.0rem;
+margin: 0 auto;
+background-size:cover;
 
-  #sitehead {
-    margin-top: 4rem;
-  }
+    }
+    hr {width:75%; padding-left:1.0rem;padding-right:1.0rem;}
 
-  h1 {
-    font-size: 2rem;
-  }
+    
+/* #container {width:40.3ch;} */
+/* img {max-width:40.3ch} */
 
-  p {
-    font-size: 1rem;
-  }
-
-  hr {
-    width: 75%;
-    padding: 0 1rem;
-  }
 }
 
-/* Medium Devices (min-width: 200px and max-width: 639px) */
-@media screen and (min-width: 200px) and (max-width: 639px) {
-  html {
-    font-size: 16px;
-  }
 
-  #container, #sitehead, .content, body {
-    width: 100vw;
+@media screen and (min-width:200px) and (max-width:639px) {
+html {font-size:16px;}
+  #container,#sitehead,.content,body {
+  width:100vw;
   }
-
-  #container, #sitehead {
-    min-width: 100px;
-    min-height: 100px;
+  #container,#sitehead {
+/*     width:100%; */ 
+    min-width:100px;
+    min-height:100px;
+/*     margin-top:0.5em; */
+    /*padding-top:0.5em;*/
     padding-top: 0.5rem;
-    font-size: 1rem;
+    font-size:1.0rem;
   }
-
-  #sitehead {
-    font-size: 1.5rem;
-  }
-
+  #sitehead {font-size:1.5rem;}
   body {
-    font-size: 1em;
+  width: 100%;
+    font-size:1.0em;
   }
-
-  p {
-    font-size: 1em;
-  }
-
-  h1 {
-    font-size: 2em;
-  }
-}
-
-/* Large Devices (min-width: 640px) */
-@media screen and (min-width: 640px) {
-  html {
-    font-size: 16px;
-  }
-
-  #container {
-    max-width: 50rem;
-    margin: 0 auto;
-  }
-
-  h1 {
-    font-size: 4rem;
-  }
-
-  p {
-    font-size: 1.4em;
-  }
+  p {font-size:1.0em;}
+  h1 {font-size:2.0em;}
 }
 
 /* Dark Mode */
@@ -344,11 +371,15 @@ a.sitetitle {
   }
 
   a {
-    color: hsl(190, 70%, 60%); /* Cyan for links */
+    /* color: hsl(190, 70%, 60%); */ /* Cyan for links */
   }
 
   a:hover {
     color: hsl(190, 70%, 75%); /* Lighter cyan on hover */
+  }
+  
+  a.sitetitle {
+  	color: hsl(287.25, 49.25%, 33.84%);
   }
 
   blockquote {
@@ -364,4 +395,5 @@ a.sitetitle {
   hr {
     color: hsl(210, 15%, 40%); /* Subtle line color */
   }
+  
 }
