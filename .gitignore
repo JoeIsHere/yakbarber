@@ -1,0 +1,31 @@
+# Personal content - never commit
+content/
+drafts/
+images/
+
+# Generated output
+output/
+output_staging/
+output2/
+
+# Legacy test content (until replaced by proper tests)
+content2/
+
+# Personal settings (only settings.example.toml is committed)
+settings.toml
+settings.py
+settingstest.py
+
+# Server logs
+nohup.out
+
+# OS files
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Caddy config (deployment-specific)
+caddy/
