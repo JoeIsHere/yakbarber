@@ -1,20 +1,22 @@
-# Personal content - never commit
-content/
-drafts/
-images/
+# Personal content - never commit (root-level only)
+/content/
+/drafts/
+/images/
 
 # Generated output
-output/
-output_staging/
-output2/
+/output/
+/output_staging/
+/output2/
 
 # Legacy test content (until replaced by proper tests)
-content2/
+/content2/
 
 # Personal settings (only settings.example.toml is committed)
-settings.toml
-settings.py
-settingstest.py
+/settings.toml
+/settings.py
+/settingstest.py
+/settings_staging.py
+/settings_staging.toml
 
 # Server logs
 nohup.out
@@ -27,5 +29,17 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Caddy config (deployment-specific)
-caddy/
+# Deployment-specific (contains server paths and personal config)
+/caddy/
+/automation/
+/sync_to_serve.py
+/site_build4.sh
+
+# Leftover nested repo
+/yak-steel/
+
+# Old directory
+/old/
+
+# Review directory (archived files for user review)
+/review/

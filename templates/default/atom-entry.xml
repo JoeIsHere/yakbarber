@@ -1,0 +1,27 @@
+<entry>
+  <id>{{postURL}}</id>
+  <title>{{{title}}}</title>
+  {{#link}}
+  <link rel="alternate" type="text/html" href="{{link}}" />
+  <link rel="related" type="text/html" href="{{postURL}}" />
+  {{/link}}
+  {{^link}}
+  <link rel="alternate" type="text/html" href="{{postURL}}" />
+  {{/link}}
+  <published>{{date}}</published>
+  {{#updated}}
+  <updated>{{updated}}</updated>
+  {{/updated}}
+  {{^updated}}
+  <updated>{{date}}</updated>
+  {{/updated}}
+  <author>
+    <name>{{author}}</name>
+    <uri>{{webRoot}}</uri>
+  </author>
+  <content type="html" xml:lang="en">
+    <![CDATA[
+    {{{content}}}
+    ]]>
+  </content>
+</entry>

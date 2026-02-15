@@ -1,0 +1,19 @@
+[site]
+root = "./"
+web_root = "https://example.com/"
+content_dir = "tests/fixtures/content/"
+template_dir = "tests/fixtures/templates/default/"
+output_dir = ""
+drafts_dir = "tests/fixtures/drafts/"
+site_name = "Test Blog"
+author = "Test Author"
+ogp_default_image = "https://example.com/images/default.jpg"
+posts_per_page = 2
+
+[integrations]
+typekit_id = ""
+analytics_domain = ""
+
+[social]
+twitter_handle = ""
+fedi_handle = ""

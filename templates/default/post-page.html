@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<html prefix="og: http://ogp.me/ns#">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8; width=device-width" />
+<meta property="og:title" content="{{title}}" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="{{postURL}}" />
+<meta property="og:image" content="{{image}}" />
+{{#twitterHandle}}
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="{{twitterHandle}}" />
+{{/twitterHandle}}
+{{#fediHandle}}
+<meta name="fediverse:creator" content="{{fediHandle}}" />
+{{/fediHandle}}
+<meta name="viewport" content="initial-scale=1.0">
+
+<link rel="stylesheet" type="text/css" href="{{webRoot}}main.css">
+<link rel="stylesheet" href="{{webRoot}}solarized_dark.css">
+<link rel="alternate" type="application/rss+xml" title="{{sitename}}" href="{{webRoot}}feed.xml" />
+<link rel="alternate" type="application/atom+xml" title="{{sitename}}" href="{{webRoot}}feed.xml" />
+{{#analyticsDomain}}
+<script defer data-domain="{{analyticsDomain}}" src="https://plausible.io/js/script.js"></script>
+{{/analyticsDomain}}
+<script src="{{webRoot}}highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+{{#typekitId}}
+<script type="text/javascript" src="//use.typekit.net/{{typekitId}}.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+{{/typekitId}}
+</head>
+<body>
+<title>{{{title}}}</title>
+<div class="topnav">
+<p>
+<a class="topnav" href="{{webRoot}}feed">Subscribe</a><br>
+<a class="topnav" href="{{webRoot}}about.html">About</a>
+</p>
+</div>
+<div id="container">
+<div id="sitehead">
+<h1><a class="sitetitle" href="{{webRoot}}index.html">{{sitename}}</a></h1>
+</div>
+<div id="multwrap">
+<div class="post-content">{{{post-content}}}</div>
+<div class="botnav">
+<a class="botnav" href="{{webRoot}}feed">Subscribe</a>
+<a class="botnav" href="{{webRoot}}about.html">About</a>
+</div>
+</div>
+</div>
+<script defr src="{{webroot}}date_adjust.js"></script>
+</body>
+</html>

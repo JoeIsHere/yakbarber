@@ -1,0 +1,22 @@
+[site]
+root = "./"
+web_root = "https://YOURDOMAIN/"
+content_dir = "content/"
+template_dir = "templates/default/"
+output_dir = "output/"
+drafts_dir = "drafts/"
+site_name = "YOUR TITLE"
+author = "YOUR NAME"
+ogp_default_image = ""
+posts_per_page = 10
+
+[integrations]
+# From the typekit "kit" get the 7 characters before the ".js"
+# If you're not using Adobe TypeKit, leave this blank and it will not process.
+typekit_id = ""
+# If using Plausible.io analytics, set this to your domain.
+analytics_domain = ""
+
+[social]
+twitter_handle = ""
+fedi_handle = ""

@@ -1,0 +1,9 @@
+<entry>
+  <id>{{postURL}}</id>
+  <title>{{{title}}}</title>
+  <link rel="alternate" type="text/html" href="{{postURL}}" />
+  <published>{{date}}</published>
+  <updated>{{date}}</updated>
+  <author><name>{{author}}</name></author>
+  <content type="html"><![CDATA[{{{content}}}]]></content>
+</entry>
