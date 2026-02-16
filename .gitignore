@@ -1,45 +1,38 @@
-# Personal content - never commit (root-level only)
-/content/
-/drafts/
-/images/
+# Allowlist approach: ignore everything, then explicitly permit public files.
+# Any new file in yak-steel is automatically excluded from the public repo.
+# To add a file to the public repo, add a !path line below.
 
-# Generated output
-/output/
-/output_staging/
-/output2/
+# Ignore everything by default
+*
 
-# Legacy test content (until replaced by proper tests)
-/content2/
+# Allow git config
+!.gitignore
 
-# Personal settings (only settings.example.toml is committed)
-/settings.toml
-/settings.py
-/settingstest.py
-/settings_staging.py
-/settings_staging.toml
+# Allow the yakbarber package
+!yakbarber/
+!yakbarber/**
 
-# Server logs
-nohup.out
+# Allow the backward-compatible wrapper
+!yakbarber3.py
 
-# OS files
-.DS_Store
+# Allow the example settings (placeholder values only)
+!settings.example.toml
 
-# Python
+# Allow templates (templatized, no personal data)
+!templates/
+!templates/default/
+!templates/default/**
+
+# Allow the test suite
+!tests/
+!tests/**
+!tests/fixtures/
+!tests/fixtures/**
+
+# Still ignore compiled Python everywhere
 __pycache__/
 *.pyc
 *.pyo
 
-# Deployment-specific (contains server paths and personal config)
-/caddy/
-/automation/
-/sync_to_serve.py
-/site_build4.sh
-
-# Leftover nested repo
-/yak-steel/
-
-# Old directory
-/old/
-
-# Review directory (archived files for user review)
-/review/
+# Still ignore OS files everywhere
+.DS_Store
