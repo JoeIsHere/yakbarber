@@ -1,8 +1,8 @@
 # Yak Barber
 
-A fiddly little time sink, and blog system.
+This is the blog engine I use for my personal blog. It's been revised many times over the years. I don't really recommend that anyone use this.
 
-Yak Barber is a static site generator that converts Markdown posts into a complete blog with Atom feeds, pagination, and responsive templates. It uses Mustache templating and includes a file watcher for automatic rebuilds during development.
+It's a static site where markdown files with some YAML frontmatter (like multimarkdown) are processed through mustache templates into posts, and RSS.
 
 ## Features
 
@@ -108,16 +108,15 @@ Your post content here in Markdown format.
 
 ### Required Frontmatter Fields
 
-- **Title**: Post title
+- **Title**: Post title (must start with an alphanumeric character)
 - **Date**: Publication date (YYYY-MM-DD HH:MM format)
-- **Author**: Author name
-- **Category**: Post category
 
 ### Optional Frontmatter Fields
 
+- **Author**: Author name
+- **Category**: Post category
 - **Link**: External URL (for link posts)
 - **Image**: Custom OpenGraph image URL
-- **Permalink**: Custom post slug (auto-generated from title if omitted)
 
 ### About Page
 
@@ -139,10 +138,12 @@ Templates use [Mustache](http://mustache.github.io/) syntax. Available templates
 
 Common variables available in templates:
 
-- `{{siteName}}` - Site name from settings
+- `{{sitename}}` - Site name from settings
 - `{{webRoot}}` - Base URL for the site
 - `{{author}}` - Default author name
-- `{{twitterHandle}}` - Twitter/X handle (if configured)
+- `{{ogpDefaultImage}}` - Default OpenGraph image URL (index and about pages)
+- `{{image}}` - OpenGraph image URL (post pages, falls back to default)
+- `{{twitterHandle}}` - Twitter/X handle (if configured. This is maintained on my blog for historical compatibility.)
 - `{{fediHandle}}` - Fediverse handle (if configured)
 - `{{typekitId}}` - Typekit ID (if configured)
 - `{{#analyticsDomain}}...{{/analyticsDomain}}` - Conditional analytics block
@@ -160,12 +161,9 @@ output/
 ├── about.html
 ├── feed.xml
 ├── main.css
-├── YYYY/
-│   └── MM/
-│       └── DD/
-│           └── post-slug.html
+├── YYYY-MM-DD-Post-Slug.html
 └── images/
-    └── post-slug/
+    └── YYYY-MM-DD-Post-Slug/
         └── image.jpg
 ```
 

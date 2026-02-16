@@ -36,10 +36,22 @@ class TestHasCompleteFrontmatter:
     def test_nonexistent_file(self):
         assert has_complete_frontmatter('/nonexistent/file.md') is None
 
-    def test_missing_one_field(self, tmp_path):
+    def test_missing_title(self, tmp_path):
         draft = tmp_path / "partial.md"
-        draft.write_text("Title: Test\nDate: 2024-01-01 10:00:00\nAuthor: me\n\nNo category.\n")
+        draft.write_text("Date: 2024-01-01 10:00:00\n\nNo title field.\n")
         assert has_complete_frontmatter(str(draft)) is None
+
+    def test_missing_date(self, tmp_path):
+        draft = tmp_path / "partial.md"
+        draft.write_text("Title: Test\n\nNo date field.\n")
+        assert has_complete_frontmatter(str(draft)) is None
+
+    def test_title_and_date_only(self, tmp_path):
+        draft = tmp_path / "minimal.md"
+        draft.write_text("Title: Minimal Post\nDate: 2024-01-01 10:00:00\n\nJust title and date.\n")
+        result = has_complete_frontmatter(str(draft))
+        assert result is not None
+        assert result['title'][0] == 'Minimal Post'
 
 
 class TestComputePostSlug:
