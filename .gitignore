@@ -18,6 +18,14 @@
 # Allow the example settings (placeholder values only)
 !settings.example.toml
 
+# Allow documentation and dependencies
+!README.md
+!requirements.txt
+
+# Allow examples
+!examples/
+!examples/**
+
 # Allow templates (templatized, no personal data)
 !templates/
 !templates/default/
